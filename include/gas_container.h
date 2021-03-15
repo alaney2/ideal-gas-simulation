@@ -15,7 +15,8 @@ class GasContainer {
   /**
    * TODO: Add more parameters to this constructor, and add documentation.
    */
-  GasContainer();
+  GasContainer(const int kWindowSize, const int kMargin,
+               const ci::Color kBorderColor);
 
   /**
    * Displays the container walls and the current positions of the particles.
@@ -34,6 +35,9 @@ class GasContainer {
    * across a screen. Please remove it once you start working on your code.
    */
   int dummy_variable_ = 0;
+  int kWindowSize_;
+  int kMargin_;
+  ci::Color kBorderColor_;
 };
 
 }  // namespace idealgas
