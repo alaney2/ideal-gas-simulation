@@ -17,7 +17,7 @@ class GasContainer {
    * TODO: Add more parameters to this constructor, and add documentation.
    */
   GasContainer(const int kWindowSize, const int kMargin,
-               const ci::Color kBorderColor);
+               const ci::Color& kBorderColor);
 
   /**
    * Displays the container walls and the current positions of the particles_.
@@ -31,7 +31,7 @@ class GasContainer {
   void AdvanceOneFrame();
 
   void GenerateParticles(std::vector<idealgas::Particle> &particles,
-                         const idealgas::Particle &particle, int num);
+                         Particle particle, size_t particle_amount);
 
  private:
   /**
