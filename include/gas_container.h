@@ -31,7 +31,15 @@ class GasContainer {
   void AdvanceOneFrame();
 
   void GenerateParticles(std::vector<idealgas::Particle> &particles,
-                         Particle particle, size_t particle_amount);
+                         Particle &particle, size_t particle_amount);
+
+  void NegateVelocityOnWallCollision();
+
+  bool DetectCollision(Particle &p1, Particle &p2) const;
+
+  void AdjustVelocityOnCollision();
+
+  vec2 GetVelocityAfterCollision(Particle &p1, Particle &p2);
 
  private:
   /**
