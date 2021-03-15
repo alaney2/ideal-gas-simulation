@@ -9,15 +9,11 @@ GasContainer::GasContainer(const int kWindowSize, const int kMargin,
     : kWindowSize_(kWindowSize),
       kMargin_(kMargin),
       kBorderColor_(kBorderColor) {
-  Particle orange_particle(vec2(), vec2(1, 1), 5, 10, ci::Color("orange"));
+  Particle orange_particle(vec2(), vec2(1, 1), 5, 100, ci::Color("orange"));
   GenerateParticles(particles_, orange_particle, 20);
 }
 
 void GasContainer::Display() const {
-  // This function has a lot of magic numbers; be sure to design your code in a
-  // way that avoids this.
-  //  ci::gl::color(ci::Color("orange"));
-  //  ci::gl::drawSolidCircle(vec2(dummy_variable_, 200), 10);
   for (size_t i = 0; i < particles_.size(); i++) {
     ci::gl::color(particles_[i].GetColor());
     ci::gl::drawSolidCircle(particles_[i].GetPosition(),
@@ -34,8 +30,7 @@ void GasContainer::AdvanceOneFrame() {
   AdjustVelocityOnCollision();
 
   for (size_t i = 0; i < particles_.size(); ++i) {
-    particles_[i].SetPosition(particles_[i].GetPosition() +=
-                              particles_[i].GetVelocity());
+    particles_[i].SetPosition(particles_[i].GetPosition() += particles_[i].GetVelocity());
   }
 }
 
@@ -100,12 +95,13 @@ bool GasContainer::DetectCollision(Particle &p1, Particle &p2) const {
   vec2 velocity_diff = p1.GetVelocity() - p2.GetVelocity();
   vec2 position_diff = p1.GetPosition() - p2.GetPosition();
 
-  bool is_touching = glm::distance(p1.GetPosition(), p2.GetPosition()) <
+  bool is_touching = glm::distance(p1.GetPosition(), p2.GetPosition()) <=
                      p1.GetRadius() + p2.GetRadius();
   bool is_moving_closer = glm::dot(velocity_diff, position_diff) < 0;
 
   return is_touching && is_moving_closer;
 }
+
 vec2 GasContainer::GetVelocityAfterCollision(Particle &p1, Particle &p2) {
   vec2 velocity_diff = p1.GetVelocity() - p2.GetVelocity();
   vec2 position_diff = p1.GetPosition() - p2.GetPosition();
