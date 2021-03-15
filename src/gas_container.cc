@@ -25,7 +25,6 @@ void GasContainer::Display() const {
 }
 
 void GasContainer::AdvanceOneFrame() {
-  ++dummy_variable_;
   for (size_t i = 0; i < particles_.size(); ++i) {
     size_t lower_bound = kMargin_ + particles_[i].GetRadius();
     size_t upper_bound = kWindowSize_ - kMargin_ - particles_[i].GetRadius();
@@ -38,9 +37,10 @@ void GasContainer::AdvanceOneFrame() {
     }
 
     if (y_pos <= lower_bound || y_pos >= upper_bound) {
-      particles_[i].SetVelocity(vec2(particles_[i].GetVelocity().x, -particles_[i].GetVelocity().y));
+      particles_[i].SetVelocity(vec2(particles_[i].GetVelocity().x, - particles_[i].GetVelocity().y));
     }
   }
+
   for (size_t i = 0; i < particles_.size(); ++i) {
     particles_[i].SetPosition(particles_[i].GetPosition() += particles_[i].GetVelocity());
   }

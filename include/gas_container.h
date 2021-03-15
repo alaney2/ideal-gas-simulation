@@ -38,7 +38,6 @@ class GasContainer {
    * This variable is just for the purposes of demonstrating how to make a shape move
    * across a screen. Please remove it once you start working on your code.
    */
-  int dummy_variable_ = 0;
   const int kWindowSize_;
   const int kMargin_;
   const ci::Color kBorderColor_;
