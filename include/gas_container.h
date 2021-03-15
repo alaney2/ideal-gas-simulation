@@ -16,7 +16,7 @@ class GasContainer {
   /**
    * TODO: Add more parameters to this constructor, and add documentation.
    */
-  GasContainer(const int kWindowSize, const int kMargin,
+  GasContainer(int kWindowSize, int kMargin,
                const ci::Color& kBorderColor);
 
   /**
