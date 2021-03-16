@@ -1,12 +1,3 @@
-//
-// Created by Alan Yao on 3/14/21.
-//
-
-//#ifndef IDEAL_GAS_GAS_PARTICLE_H
-//#define IDEAL_GAS_GAS_PARTICLE_H
-//
-//#endif //IDEAL_GAS_GAS_PARTICLE_H
-
 #pragma once
 
 #include "cinder/gl/gl.h"
