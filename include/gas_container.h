@@ -14,7 +14,7 @@ namespace idealgas {
 class GasContainer {
  public:
   /**
-   * TODO: Add more parameters to this constructor, and add documentation.
+   * The gas container to hold all the gas particles.
    */
   GasContainer(int kWindowSize, int kMargin,
                const ci::Color& kBorderColor);
@@ -30,26 +30,46 @@ class GasContainer {
    */
   void AdvanceOneFrame();
 
+  /**
+   * Generates a given amount of particles of a given particle to a vector.
+   * @param particles vector of particles
+   * @param particle to generate
+   * @param particle_amount number of particles to generate
+   */
   void GenerateParticles(std::vector<idealgas::Particle> &particles,
                          Particle &particle, size_t particle_amount);
 
+  /**
+   * Sets new velocity after hitting wall.
+   */
   void NegateVelocityOnWallCollision();
 
+  /**
+   * Detects if there is a collision between two particles.
+   * @param p1 first particle
+   * @param p2 second particle
+   * @return if there is a collision
+   */
   bool DetectCollision(Particle &p1, Particle &p2) const;
 
+  /**
+   * Sets new velocities of particles that have collided.
+   */
   void AdjustVelocityOnCollision();
 
+  /**
+   * Gets the new velocity after a collision.
+   * @param p1 first particle
+   * @param p2 second particle
+   * @return new velocity vec2 after collision
+   */
   vec2 GetVelocityAfterCollision(Particle &p1, Particle &p2);
 
  private:
-  /**
-   * This variable is just for the purposes of demonstrating how to make a shape move
-   * across a screen. Please remove it once you start working on your code.
-   */
-  const int kWindowSize_;
-  const int kMargin_;
-  const ci::Color kBorderColor_;
-  std::vector<idealgas::Particle> particles_;
+  const int kWindowSize_; // size of application window
+  const int kMargin_; // size of margin surrounding container
+  const ci::Color kBorderColor_; // color of gas container border
+  std::vector<idealgas::Particle> particles_; // vector of particles in container
 };
 
 }  // namespace idealgas

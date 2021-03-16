@@ -9,8 +9,8 @@ GasContainer::GasContainer(const int kWindowSize, const int kMargin,
     : kWindowSize_(kWindowSize),
       kMargin_(kMargin),
       kBorderColor_(kBorderColor) {
-  Particle orange_particle(vec2(), vec2(1, 1), 5, 100, ci::Color("orange"));
-  GenerateParticles(particles_, orange_particle, 20);
+  Particle orange_particle(vec2(), vec2(3, 3), 5, 10, ci::Color("cyan"));
+  GenerateParticles(particles_, orange_particle, 60);
 }
 
 void GasContainer::Display() const {
@@ -26,8 +26,8 @@ void GasContainer::Display() const {
 }
 
 void GasContainer::AdvanceOneFrame() {
-  NegateVelocityOnWallCollision();
   AdjustVelocityOnCollision();
+  NegateVelocityOnWallCollision();
 
   for (size_t i = 0; i < particles_.size(); ++i) {
     particles_[i].SetPosition(particles_[i].GetPosition() += particles_[i].GetVelocity());
@@ -47,8 +47,8 @@ void GasContainer::GenerateParticles(std::vector<idealgas::Particle> &particles,
   size_t upper_bound = kWindowSize_ - 2 * (kMargin_ + particle.GetRadius());
 
   for (size_t i = 0; i < particle_amount; ++i) {
-    size_t rand_x_pos = (rand() % (upper_bound)) + lower_bound;
-    size_t rand_y_pos = (rand() % (upper_bound)) + lower_bound;
+    size_t rand_x_pos = (rand() % (upper_bound + 1)) + lower_bound;
+    size_t rand_y_pos = (rand() % (upper_bound + 1)) + lower_bound;
 
     particle.SetPosition(vec2(rand_x_pos, rand_y_pos));
     particles.push_back(particle);
@@ -95,8 +95,8 @@ bool GasContainer::DetectCollision(Particle &p1, Particle &p2) const {
   vec2 velocity_diff = p1.GetVelocity() - p2.GetVelocity();
   vec2 position_diff = p1.GetPosition() - p2.GetPosition();
 
-  bool is_touching = glm::distance(p1.GetPosition(), p2.GetPosition()) <=
-                     p1.GetRadius() + p2.GetRadius();
+  bool is_touching = glm::distance(p1.GetPosition(), p2.GetPosition())
+                     <= p1.GetRadius() + p2.GetRadius();
   bool is_moving_closer = glm::dot(velocity_diff, position_diff) < 0;
 
   return is_touching && is_moving_closer;

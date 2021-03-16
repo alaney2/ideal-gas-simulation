@@ -17,14 +17,12 @@ class IdealGasApp : public ci::app::App {
   void draw() override;
   void update() override;
 
-  // TODO: Delete this comment. Feel free to play around with these variables
-  // provided that you can see the entire UI on your screen.
   const int kWindowSize = 750;
   const int kMargin = 100;
   const ci::Color kBorderColor = ci::Color("white");
 
  private:
-  GasContainer container_;
+  GasContainer container_; // The gas container for the particles to move in.
 };
 
 }  // namespace idealgas
