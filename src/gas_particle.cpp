@@ -14,7 +14,7 @@ glm::vec2 Particle::GetVelocity() const {
   return velocity_;
 }
 
-int Particle::GetMass() const {
+double Particle::GetMass() const {
   return mass_;
 }
 

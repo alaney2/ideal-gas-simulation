@@ -13,7 +13,7 @@ class Particle {
 
     glm::vec2 GetPosition() const;
     glm::vec2 GetVelocity() const;
-    int GetMass() const;
+    double GetMass() const;
     int GetRadius() const;
     ci::Color GetColor() const;
 
@@ -23,7 +23,7 @@ class Particle {
   private:
     glm::vec2 position_;
     glm::vec2 velocity_;
-    int mass_;
+    double mass_;
     int radius_;
     ci::Color color_;
 };

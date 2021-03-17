@@ -56,11 +56,11 @@ void GasContainer::GenerateParticles(std::vector<idealgas::Particle> &particles,
 }
 
 void GasContainer::NegateVelocityOnWallCollision(Particle &particle) {
-  size_t lower_bound = kMargin_ + particle.GetRadius();
-  size_t upper_bound = kWindowSize_ - kMargin_ - particle.GetRadius();
+  double lower_bound = kMargin_ + particle.GetRadius();
+  double upper_bound = kWindowSize_ - kMargin_ - particle.GetRadius();
 
-  size_t x_pos = particle.GetPosition().x;
-  size_t y_pos = particle.GetPosition().y;
+  double x_pos = particle.GetPosition().x;
+  double y_pos = particle.GetPosition().y;
 
   if (x_pos <= lower_bound || x_pos >= upper_bound) {
     particle.SetVelocity(
@@ -105,7 +105,7 @@ vec2 GasContainer::GetVelocityAfterCollision(Particle &p1, Particle &p2) {
   vec2 velocity_diff = p1.GetVelocity() - p2.GetVelocity();
   vec2 position_diff = p1.GetPosition() - p2.GetPosition();
 
-  double mass_ratio = 2.0 * p2.GetMass() / (p1.GetMass() + p2.GetMass());
+  double mass_ratio = 2 * p2.GetMass() / (p1.GetMass() + p2.GetMass());
   double constant = glm::dot(velocity_diff, position_diff) /
                     pow(glm::length(position_diff), 2);
 

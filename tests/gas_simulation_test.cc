@@ -6,7 +6,6 @@ using idealgas::GasContainer;
 using idealgas::Particle;
 using glm::vec2;
 
-std::vector<idealgas::Particle> particles_;
 const int kWindowSize = 200;
 const int kMargin = 0;
 GasContainer container(kWindowSize, kMargin, "white");
@@ -116,32 +115,135 @@ TEST_CASE("Particle-particle collisions") {
   }
 }
 
-TEST_CASE("Particles not colliding when moving in different directions") {
-  Particle middle_particle(vec2(100,100), vec2(0,0), 1,1,"cyan");
+TEST_CASE("Particles not colliding when not moving towards each other") {
+  // Particle to compare with other particles.
+  Particle particle(vec2(100,100), vec2(0,0), 1,1,"cyan");
 
   SECTION("Does not bounce from right") {
     Particle target_particle(vec2(101,100), vec2(1,0), 1, 1, "cyan");
 
-    REQUIRE_FALSE(GasContainer::DetectCollision(middle_particle, target_particle));
+    REQUIRE(GasContainer::DetectCollision(particle, target_particle) == false);
   }
 
+  SECTION("Does not bounce from left") {
+    Particle target_particle(vec2(99,100), vec2(-1,0), 1, 1, "cyan");
+
+    REQUIRE(GasContainer::DetectCollision(particle, target_particle) == false);
+  }
+
+  SECTION("Does not bounce from top") {
+    Particle target_particle(vec2(100,99), vec2(0,-1), 1, 1, "cyan");
+
+    REQUIRE(GasContainer::DetectCollision(particle, target_particle) == false);
+  }
+
+  SECTION("Does not bounce from bottom") {
+    Particle target_particle(vec2(100,101), vec2(0,1), 1, 1, "cyan");
+
+    REQUIRE(GasContainer::DetectCollision(particle, target_particle) == false);
+  }
+
+  SECTION("Does not bounce diagonally") {
+    Particle target_particle(vec2(101,99), vec2(1,-1), 1, 1, "cyan");
+
+    REQUIRE(GasContainer::DetectCollision(particle, target_particle) == false);
+  }
+
+  SECTION("Does not bounce antidiagonally") {
+    Particle target_particle(vec2(99,101), vec2(-1,1), 1, 1, "cyan");
+
+    REQUIRE(GasContainer::DetectCollision(particle, target_particle) == false);
+  }
+
+  SECTION("Does not when still") {
+    Particle target_particle(vec2(100,101), vec2(0,0), 1, 1, "cyan");
+
+    REQUIRE(GasContainer::DetectCollision(particle, target_particle) == false);
+  }
 }
 
 TEST_CASE("Container wall boundaries") {
-  SECTION("Particle does not collide with left wall") {
-    Particle particle(vec2(101.1,200), vec2(1, 0), 1, 1, "cyan");
+  SECTION("Particle does not collide with right wall") {
+    Particle particle(vec2(198.9,100), vec2(0, 0), 1, 1, "cyan");
     size_t lower_bound = kMargin + particle.GetRadius();
     size_t upper_bound = kWindowSize - kMargin - particle.GetRadius();
-    size_t x_pos = particle.GetPosition().x;
+    double x_pos = particle.GetPosition().x;
 
     bool out_of_bounds = x_pos <= lower_bound || x_pos >= upper_bound;
-    REQUIRE_FALSE(out_of_bounds);
+    REQUIRE(out_of_bounds == false);
+  }
+
+  SECTION("Particle does not collide with left wall") {
+    Particle particle(vec2(1.1,100), vec2(0, 0), 1, 1, "cyan");
+    std::cout << particle.GetPosition() << std::endl;
+    size_t lower_bound = kMargin + particle.GetRadius();
+    size_t upper_bound = kWindowSize - kMargin - particle.GetRadius();
+    double x_pos = particle.GetPosition().x;
+
+    bool out_of_bounds = x_pos <= lower_bound || x_pos >= upper_bound;
+    REQUIRE(out_of_bounds == false);
+  }
+
+  SECTION("Particle does not collide with top wall") {
+    Particle particle(vec2(100,198.9), vec2(0, 0), 1, 1, "cyan");
+    size_t lower_bound = kMargin + particle.GetRadius();
+    size_t upper_bound = kWindowSize - kMargin - particle.GetRadius();
+    double y_pos = particle.GetPosition().y;
+
+    bool out_of_bounds = y_pos <= lower_bound || y_pos >= upper_bound;
+    REQUIRE(out_of_bounds == false);
+  }
+
+  SECTION("Particle does not collide with bottom wall") {
+    Particle particle(vec2(100,198.9), vec2(0, 0), 1, 1, "cyan");
+    size_t lower_bound = kMargin + particle.GetRadius();
+    size_t upper_bound = kWindowSize - kMargin - particle.GetRadius();
+    double y_pos = particle.GetPosition().y;
+
+    bool out_of_bounds = y_pos <= lower_bound || y_pos >= upper_bound;
+    REQUIRE(out_of_bounds == false);
   }
 }
 
 TEST_CASE("Particle colliding with container wall") {
   SECTION("Right wall collision") {
-    Particle particle(vec2(199,100), vec2(1,0), 1, 1, "cyan");
+    Particle particle(vec2(199,100), vec2(0,0), 1, 1, "cyan");
+    size_t lower_bound = kMargin + particle.GetRadius();
+    size_t upper_bound = kWindowSize - kMargin - particle.GetRadius();
+    double x_pos = particle.GetPosition().x;
+
+    bool out_of_bounds = x_pos <= lower_bound || x_pos >= upper_bound;
+    REQUIRE(out_of_bounds);
+  }
+
+  SECTION("Left wall collision") {
+    Particle particle(vec2(1,100), vec2(0, 0), 1, 1, "cyan");
+    size_t lower_bound = kMargin + particle.GetRadius();
+    size_t upper_bound = kWindowSize - kMargin - particle.GetRadius();
+    double x_pos = particle.GetPosition().x;
+
+    bool out_of_bounds = x_pos <= lower_bound || x_pos >= upper_bound;
+    REQUIRE(out_of_bounds);
+  }
+
+  SECTION("Top wall collision") {
+    Particle particle(vec2(100,199), vec2(0, 0), 1, 1, "cyan");
+    size_t lower_bound = kMargin + particle.GetRadius();
+    size_t upper_bound = kWindowSize - kMargin - particle.GetRadius();
+    double y_pos = particle.GetPosition().y;
+
+    bool out_of_bounds = y_pos <= lower_bound || y_pos >= upper_bound;
+    REQUIRE(out_of_bounds);
+  }
+
+  SECTION("Bottom wall collision") {
+    Particle particle(vec2(100,1), vec2(0, 0), 1, 1, "cyan");
+    size_t lower_bound = kMargin + particle.GetRadius();
+    size_t upper_bound = kWindowSize - kMargin - particle.GetRadius();
+    double y_pos = particle.GetPosition().y;
+
+    bool out_of_bounds = y_pos <= lower_bound || y_pos >= upper_bound;
+    REQUIRE(out_of_bounds);
   }
 }
 
@@ -293,15 +395,3 @@ TEST_CASE("Position update after wall collision") {
   }
 }
 
-
-/*
-
-You can (and should) create more test files; this project is too big
-for all tests to be in the same file. Remember that, for each file (foo.cc)
-containing non-trivial code, you should have a corresponding test file
-(foo_test.cc)
-
-Make sure to add any files that you create to CMakeLists.txt.
-
-TODO Delete this comment and the placeholder test before submitting your code.
-*/
