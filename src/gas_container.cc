@@ -91,7 +91,7 @@ void GasContainer::AdjustVelocityOnCollision() {
   }
 }
 
-bool GasContainer::DetectCollision(Particle &p1, Particle &p2) const {
+bool GasContainer::DetectCollision(Particle &p1, Particle &p2) {
   vec2 velocity_diff = p1.GetVelocity() - p2.GetVelocity();
   vec2 position_diff = p1.GetPosition() - p2.GetPosition();
 

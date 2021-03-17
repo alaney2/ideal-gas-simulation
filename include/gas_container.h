@@ -50,7 +50,7 @@ class GasContainer {
    * @param p2 second particle
    * @return if there is a collision
    */
-  bool DetectCollision(Particle &p1, Particle &p2) const;
+  static bool DetectCollision(Particle &p1, Particle &p2);
 
   /**
    * Sets new velocities of particles that have collided.
