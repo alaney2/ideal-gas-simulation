@@ -42,7 +42,7 @@ class GasContainer {
   /**
    * Sets new velocity after hitting wall.
    */
-  void NegateVelocityOnWallCollision();
+  void NegateVelocityOnWallCollision(Particle &particle);
 
   /**
    * Detects if there is a collision between two particles.

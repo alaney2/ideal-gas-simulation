@@ -9,7 +9,7 @@ GasContainer::GasContainer(const int kWindowSize, const int kMargin,
     : kWindowSize_(kWindowSize),
       kMargin_(kMargin),
       kBorderColor_(kBorderColor) {
-  Particle orange_particle(vec2(), vec2(3, 3), 5, 10, ci::Color("cyan"));
+  Particle orange_particle(vec2(), vec2(4, 4), 5, 10, ci::Color("orange"));
   GenerateParticles(particles_, orange_particle, 60);
 }
 
@@ -27,9 +27,9 @@ void GasContainer::Display() const {
 
 void GasContainer::AdvanceOneFrame() {
   AdjustVelocityOnCollision();
-  NegateVelocityOnWallCollision();
 
   for (size_t i = 0; i < particles_.size(); ++i) {
+    NegateVelocityOnWallCollision(particles_[i]);
     particles_[i].SetPosition(particles_[i].GetPosition() += particles_[i].GetVelocity());
   }
 }
@@ -55,25 +55,24 @@ void GasContainer::GenerateParticles(std::vector<idealgas::Particle> &particles,
   }
 }
 
-void GasContainer::NegateVelocityOnWallCollision() {
-  for (size_t i = 0; i < particles_.size(); ++i) {
-    size_t lower_bound = kMargin_ + particles_[i].GetRadius();
-    size_t upper_bound = kWindowSize_ - kMargin_ - particles_[i].GetRadius();
+void GasContainer::NegateVelocityOnWallCollision(Particle &particle) {
+  size_t lower_bound = kMargin_ + particle.GetRadius();
+  size_t upper_bound = kWindowSize_ - kMargin_ - particle.GetRadius();
 
-    size_t x_pos = particles_[i].GetPosition().x;
-    size_t y_pos = particles_[i].GetPosition().y;
+  size_t x_pos = particle.GetPosition().x;
+  size_t y_pos = particle.GetPosition().y;
 
-    if (x_pos <= lower_bound || x_pos >= upper_bound) {
-      particles_[i].SetVelocity(
-          vec2(-particles_[i].GetVelocity().x, particles_[i].GetVelocity().y));
-    }
+  if (x_pos <= lower_bound || x_pos >= upper_bound) {
+    particle.SetVelocity(
+        vec2(-particle.GetVelocity().x, particle.GetVelocity().y));
+  }
 
-    if (y_pos <= lower_bound || y_pos >= upper_bound) {
-      particles_[i].SetVelocity(
-          vec2(particles_[i].GetVelocity().x, -particles_[i].GetVelocity().y));
-    }
+  if (y_pos <= lower_bound || y_pos >= upper_bound) {
+    particle.SetVelocity(
+        vec2(particle.GetVelocity().x, -particle.GetVelocity().y));
   }
 }
+
 
 void GasContainer::AdjustVelocityOnCollision() {
   for (size_t i = 0; i < particles_.size(); ++i) {
