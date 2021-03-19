@@ -9,8 +9,8 @@ GasContainer::GasContainer(const int kWindowSize, const int kMargin,
     : kWindowSize_(kWindowSize),
       kMargin_(kMargin),
       kBorderColor_(kBorderColor) {
-  Particle orange_particle(vec2(), vec2(4, 4), 5, 10, ci::Color("orange"));
-  GenerateParticles(particles_, orange_particle, 60);
+  Particle green_particle(vec2(), vec2(4, 4), 5, 10, ci::Color("green"));
+  GenerateParticles(particles_, green_particle, 60);
 }
 
 void GasContainer::Display() const {
