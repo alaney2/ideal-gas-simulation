@@ -2,8 +2,8 @@
 
 namespace idealgas {
 
-Particle::Particle(glm::vec2 position, glm::vec2 velocity, int mass, int radius,
-                   ci::Color color) : position_(position), velocity_(velocity),
+Particle::Particle(const glm::vec2& position, const glm::vec2& velocity, int mass, int radius,
+                   const ci::Color& color) : position_(position), velocity_(velocity),
                                       mass_(mass), radius_(radius), color_(color) {}
 
 glm::vec2 Particle::GetPosition() const {
@@ -26,10 +26,10 @@ ci::Color Particle::GetColor() const {
   return color_;
 }
 
-void Particle::SetPosition(glm::vec2 position) {
+void Particle::SetPosition(const glm::vec2& position) {
   position_ = position;
 }
-void Particle::SetVelocity(glm::vec2 velocity) {
+void Particle::SetVelocity(const glm::vec2& velocity) {
   velocity_ = velocity;
 }
 

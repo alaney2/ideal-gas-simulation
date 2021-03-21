@@ -9,15 +9,16 @@ GasContainer::GasContainer(const int kWindowSize, const int kMargin,
     : kWindowSize_(kWindowSize),
       kMargin_(kMargin),
       kBorderColor_(kBorderColor) {
-  Particle green_particle(vec2(), vec2(4, 4), 5, 10, ci::Color("green"));
+  Particle green_particle(vec2(), vec2(4, 4), 5,
+                          10, ci::Color("green"));
   GenerateParticles(particles_, green_particle, 60);
 }
 
 void GasContainer::Display() const {
-  for (size_t i = 0; i < particles_.size(); i++) {
-    ci::gl::color(particles_[i].GetColor());
-    ci::gl::drawSolidCircle(particles_[i].GetPosition(),
-                            particles_[i].GetRadius());
+  for (const auto & particle : particles_) {
+    ci::gl::color(particle.GetColor());
+    ci::gl::drawSolidCircle(particle.GetPosition(),
+                            static_cast<float>(particle.GetRadius()));
   }
   ci::gl::color(kBorderColor_);
   ci::gl::drawStrokedRect(
@@ -28,9 +29,9 @@ void GasContainer::Display() const {
 void GasContainer::AdvanceOneFrame() {
   AdjustVelocityOnCollision();
 
-  for (size_t i = 0; i < particles_.size(); ++i) {
-    NegateVelocityOnWallCollision(particles_[i]);
-    particles_[i].SetPosition(particles_[i].GetPosition() += particles_[i].GetVelocity());
+  for (auto & particle : particles_) {
+    NegateVelocityOnWallCollision(particle);
+    particle.SetPosition(particle.GetPosition() += particle.GetVelocity());
   }
 }
 
@@ -90,7 +91,7 @@ void GasContainer::AdjustVelocityOnCollision() {
   }
 }
 
-bool GasContainer::DetectCollision(Particle &p1, Particle &p2) {
+bool GasContainer::DetectCollision(const Particle &p1, const Particle &p2) {
   vec2 velocity_diff = p1.GetVelocity() - p2.GetVelocity();
   vec2 position_diff = p1.GetPosition() - p2.GetPosition();
 
@@ -101,7 +102,7 @@ bool GasContainer::DetectCollision(Particle &p1, Particle &p2) {
   return is_touching && is_moving_closer;
 }
 
-vec2 GasContainer::GetVelocityAfterCollision(Particle &p1, Particle &p2) {
+vec2 GasContainer::GetVelocityAfterCollision(const Particle &p1, const Particle &p2) {
   vec2 velocity_diff = p1.GetVelocity() - p2.GetVelocity();
   vec2 position_diff = p1.GetPosition() - p2.GetPosition();
 

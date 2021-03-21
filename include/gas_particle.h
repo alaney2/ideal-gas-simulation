@@ -9,7 +9,7 @@ namespace idealgas {
  */
 class Particle {
  public:
-    Particle(glm::vec2 position, glm::vec2 velocity, int mass, int radius, ci::Color color);
+    Particle(const glm::vec2& position, const glm::vec2& velocity, int mass, int radius, const ci::Color& color);
 
     glm::vec2 GetPosition() const;
     glm::vec2 GetVelocity() const;
@@ -17,8 +17,8 @@ class Particle {
     int GetRadius() const;
     ci::Color GetColor() const;
 
-    void SetPosition(glm::vec2 position);
-    void SetVelocity(glm::vec2 velocity);
+    void SetPosition(const glm::vec2& position);
+    void SetVelocity(const glm::vec2& velocity);
 
   private:
     glm::vec2 position_;

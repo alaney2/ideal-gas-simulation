@@ -50,7 +50,7 @@ class GasContainer {
    * @param p2 second particle
    * @return if there is a collision
    */
-  static bool DetectCollision(Particle &p1, Particle &p2);
+  static bool DetectCollision(const Particle &p1, const Particle &p2);
 
   /**
    * Sets new velocities of particles that have collided.
@@ -63,7 +63,7 @@ class GasContainer {
    * @param p2 second particle
    * @return new velocity vec2 after collision
    */
-  vec2 GetVelocityAfterCollision(Particle &p1, Particle &p2);
+  static vec2 GetVelocityAfterCollision(const Particle &p1, const Particle &p2);
 
  private:
   const int kWindowSize_; // size of application window
