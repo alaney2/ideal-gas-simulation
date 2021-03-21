@@ -8,7 +8,8 @@ namespace idealgas {
  *
  */
 class PhysicsEngine {
+ public:
 
 };
 
-}
+}  // namespace idealgas

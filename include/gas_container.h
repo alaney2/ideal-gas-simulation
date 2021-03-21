@@ -9,15 +9,15 @@ namespace idealgas {
 
 /**
  * The container in which all of the gas particles_ are contained. This class
- * stores all of the particles_ and updates them on each frame of the simulation.
+ * stores all of the particles_ and updates them on each frame of the
+ * simulation.
  */
 class GasContainer {
  public:
   /**
    * The gas container to hold all the gas particles.
    */
-  GasContainer(int kWindowSize, int kMargin,
-               const ci::Color& kBorderColor);
+  GasContainer(int kWindowSize, int kMargin, const ci::Color &kBorderColor);
 
   /**
    * Displays the container walls and the current positions of the particles_.
@@ -66,10 +66,11 @@ class GasContainer {
   static vec2 GetVelocityAfterCollision(const Particle &p1, const Particle &p2);
 
  private:
-  const int kWindowSize_; // size of application window
-  const int kMargin_; // size of margin surrounding container
-  const ci::Color kBorderColor_; // color of gas container border
-  std::vector<idealgas::Particle> particles_; // vector of particles in container
+  const int kWindowSize_;         // size of application window
+  const int kMargin_;             // size of margin surrounding container
+  const ci::Color kBorderColor_;  // color of gas container border
+  std::vector<idealgas::Particle>
+      particles_;  // vector of particles in container
 };
 
 }  // namespace idealgas

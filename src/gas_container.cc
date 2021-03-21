@@ -9,13 +9,12 @@ GasContainer::GasContainer(const int kWindowSize, const int kMargin,
     : kWindowSize_(kWindowSize),
       kMargin_(kMargin),
       kBorderColor_(kBorderColor) {
-  Particle green_particle(vec2(), vec2(4, 4), 5,
-                          10, ci::Color("green"));
+  Particle green_particle(vec2(), vec2(4, 4), 5, 10, ci::Color("green"));
   GenerateParticles(particles_, green_particle, 60);
 }
 
 void GasContainer::Display() const {
-  for (const auto & particle : particles_) {
+  for (const auto &particle : particles_) {
     ci::gl::color(particle.GetColor());
     ci::gl::drawSolidCircle(particle.GetPosition(),
                             static_cast<float>(particle.GetRadius()));
@@ -29,7 +28,7 @@ void GasContainer::Display() const {
 void GasContainer::AdvanceOneFrame() {
   AdjustVelocityOnCollision();
 
-  for (auto & particle : particles_) {
+  for (auto &particle : particles_) {
     NegateVelocityOnWallCollision(particle);
     particle.SetPosition(particle.GetPosition() += particle.GetVelocity());
   }
@@ -38,8 +37,8 @@ void GasContainer::AdvanceOneFrame() {
 void GasContainer::GenerateParticles(std::vector<idealgas::Particle> &particles,
                                      Particle &particle,
                                      size_t particle_amount) {
-  size_t max_particles = pow((kWindowSize_ - 2 * kMargin_) /
-                                 (2 * particle.GetRadius()),2);
+  size_t max_particles =
+      pow((kWindowSize_ - 2 * kMargin_) / (2 * particle.GetRadius()), 2);
   if (particle_amount > max_particles) {
     particle_amount = max_particles;
   }
@@ -74,7 +73,6 @@ void GasContainer::NegateVelocityOnWallCollision(Particle &particle) {
   }
 }
 
-
 void GasContainer::AdjustVelocityOnCollision() {
   for (size_t i = 0; i < particles_.size(); ++i) {
     for (size_t j = i + 1; j < particles_.size(); ++j) {
@@ -95,14 +93,15 @@ bool GasContainer::DetectCollision(const Particle &p1, const Particle &p2) {
   vec2 velocity_diff = p1.GetVelocity() - p2.GetVelocity();
   vec2 position_diff = p1.GetPosition() - p2.GetPosition();
 
-  bool is_touching = glm::distance(p1.GetPosition(), p2.GetPosition())
-                     <= p1.GetRadius() + p2.GetRadius();
+  bool is_touching = glm::distance(p1.GetPosition(), p2.GetPosition()) <=
+                     p1.GetRadius() + p2.GetRadius();
   bool is_moving_closer = glm::dot(velocity_diff, position_diff) < 0;
 
   return is_touching && is_moving_closer;
 }
 
-vec2 GasContainer::GetVelocityAfterCollision(const Particle &p1, const Particle &p2) {
+vec2 GasContainer::GetVelocityAfterCollision(const Particle &p1,
+                                             const Particle &p2) {
   vec2 velocity_diff = p1.GetVelocity() - p2.GetVelocity();
   vec2 position_diff = p1.GetPosition() - p2.GetPosition();
 
