@@ -14,6 +14,10 @@ namespace idealgas {
 class PhysicsEngine {
  public:
   /**
+   *
+   */
+  PhysicsEngine();
+  /**
    * Sets new velocity after hitting wall.
    */
   static void NegateVelocityOnWallCollision(const int window_size, const int margin, Particle &particle);

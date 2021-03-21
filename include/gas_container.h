@@ -15,7 +15,7 @@ namespace idealgas {
 class GasContainer {
  public:
   /**
-   * The gas container to hold all the gas particles.
+   * The gas container used to hold the gas particles.
    */
   GasContainer(int kWindowSize, int kMargin, const ci::Color &kBorderColor);
 

@@ -1,14 +1,14 @@
 #include <catch2/catch.hpp>
 
-#include <gas_container.h>
+#include "physics_engine.h"
 
-using idealgas::GasContainer;
+using idealgas::PhysicsEngine;
 using idealgas::Particle;
 using glm::vec2;
 
 const int kWindowSize = 200;
 const int kMargin = 0;
-GasContainer container(kWindowSize, kMargin, "white");
+PhysicsEngine engine;
 
 TEST_CASE("Particle-particle collisions") {
   Particle particle_moving_right(vec2(100,100), vec2(1,0), 1, 1, "cyan");
@@ -20,10 +20,10 @@ TEST_CASE("Particle-particle collisions") {
 
   SECTION("Collision from right") {
     Particle target_particle(vec2(101,100), vec2(-1,0),1,1,"cyan");
-    REQUIRE(GasContainer::DetectCollision(particle_moving_right, target_particle));
+    REQUIRE(PhysicsEngine::DetectCollision(particle_moving_right, target_particle));
 
-    particle_moving_right.SetVelocity(container.GetVelocityAfterCollision(particle_moving_right, target_particle));
-    target_particle.SetVelocity(container.GetVelocityAfterCollision(target_particle, particle_moving_right));
+    particle_moving_right.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_right, target_particle));
+    target_particle.SetVelocity(engine.GetVelocityAfterCollision(target_particle, particle_moving_right));
 
     particle_moving_right.SetPosition(particle_moving_right.GetPosition() + particle_moving_right.GetVelocity());
     target_particle.SetPosition(target_particle.GetPosition() + target_particle.GetVelocity());
@@ -36,10 +36,10 @@ TEST_CASE("Particle-particle collisions") {
 
   SECTION("Collision from left") {
     Particle target_particle(vec2(99,100), vec2(1,0),1,1,"cyan");
-    REQUIRE(GasContainer::DetectCollision(particle_moving_left, target_particle));
+    REQUIRE(PhysicsEngine::DetectCollision(particle_moving_left, target_particle));
 
-    particle_moving_left.SetVelocity(container.GetVelocityAfterCollision(particle_moving_left, target_particle));
-    target_particle.SetVelocity(container.GetVelocityAfterCollision(target_particle, particle_moving_left));
+    particle_moving_left.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_left, target_particle));
+    target_particle.SetVelocity(engine.GetVelocityAfterCollision(target_particle, particle_moving_left));
 
     particle_moving_left.SetPosition(particle_moving_left.GetPosition() + particle_moving_left.GetVelocity());
     target_particle.SetPosition(target_particle.GetPosition() + target_particle.GetVelocity());
@@ -52,10 +52,10 @@ TEST_CASE("Particle-particle collisions") {
 
   SECTION("Collision from top") {
     Particle target_particle(vec2(100,101), vec2(0,-1),1,1,"cyan");
-    REQUIRE(GasContainer::DetectCollision(particle_moving_up, target_particle));
+    REQUIRE(PhysicsEngine::DetectCollision(particle_moving_up, target_particle));
 
-    particle_moving_up.SetVelocity(container.GetVelocityAfterCollision(particle_moving_up, target_particle));
-    target_particle.SetVelocity(container.GetVelocityAfterCollision(target_particle, particle_moving_up));
+    particle_moving_up.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_up, target_particle));
+    target_particle.SetVelocity(engine.GetVelocityAfterCollision(target_particle, particle_moving_up));
 
     particle_moving_up.SetPosition(particle_moving_up.GetPosition() + particle_moving_up.GetVelocity());
     target_particle.SetPosition(target_particle.GetPosition() + target_particle.GetVelocity());
@@ -68,10 +68,10 @@ TEST_CASE("Particle-particle collisions") {
 
   SECTION("Collision from bottom") {
     Particle target_particle(vec2(100,99), vec2(0,1),1,1,"cyan");
-    REQUIRE(GasContainer::DetectCollision(particle_moving_down, target_particle));
+    REQUIRE(PhysicsEngine::DetectCollision(particle_moving_down, target_particle));
 
-    particle_moving_down.SetVelocity(container.GetVelocityAfterCollision(particle_moving_down, target_particle));
-    target_particle.SetVelocity(container.GetVelocityAfterCollision(target_particle, particle_moving_down));
+    particle_moving_down.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_down, target_particle));
+    target_particle.SetVelocity(engine.GetVelocityAfterCollision(target_particle, particle_moving_down));
 
     particle_moving_down.SetPosition(particle_moving_down.GetPosition() + particle_moving_down.GetVelocity());
     target_particle.SetPosition(target_particle.GetPosition() + target_particle.GetVelocity());
@@ -84,10 +84,10 @@ TEST_CASE("Particle-particle collisions") {
 
   SECTION("Diagonal collision") {
     Particle target_particle(vec2(101,101), vec2(-1,-1),1,1,"cyan");
-    REQUIRE(GasContainer::DetectCollision(particle_moving_diagonally, target_particle));
+    REQUIRE(PhysicsEngine::DetectCollision(particle_moving_diagonally, target_particle));
 
-    particle_moving_diagonally.SetVelocity(container.GetVelocityAfterCollision(particle_moving_diagonally, target_particle));
-    target_particle.SetVelocity(container.GetVelocityAfterCollision(target_particle, particle_moving_diagonally));
+    particle_moving_diagonally.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_diagonally, target_particle));
+    target_particle.SetVelocity(engine.GetVelocityAfterCollision(target_particle, particle_moving_diagonally));
 
     particle_moving_diagonally.SetPosition(particle_moving_diagonally.GetPosition() + particle_moving_diagonally.GetVelocity());
     target_particle.SetPosition(target_particle.GetPosition() + target_particle.GetVelocity());
@@ -100,10 +100,10 @@ TEST_CASE("Particle-particle collisions") {
 
   SECTION("Antidiagonal collision") {
     Particle target_particle(vec2(99,99), vec2(1,1),1,1,"cyan");
-    REQUIRE(GasContainer::DetectCollision(particle_moving_antidiagonally, target_particle));
+    REQUIRE(PhysicsEngine::DetectCollision(particle_moving_antidiagonally, target_particle));
 
-    particle_moving_antidiagonally.SetVelocity(container.GetVelocityAfterCollision(particle_moving_antidiagonally, target_particle));
-    target_particle.SetVelocity(container.GetVelocityAfterCollision(target_particle, particle_moving_antidiagonally));
+    particle_moving_antidiagonally.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_antidiagonally, target_particle));
+    target_particle.SetVelocity(engine.GetVelocityAfterCollision(target_particle, particle_moving_antidiagonally));
 
     particle_moving_antidiagonally.SetPosition(particle_moving_antidiagonally.GetPosition() + particle_moving_antidiagonally.GetVelocity());
     target_particle.SetPosition(target_particle.GetPosition() + target_particle.GetVelocity());
@@ -122,43 +122,43 @@ TEST_CASE("Particles not colliding when not moving towards each other") {
   SECTION("Does not bounce from right") {
     Particle target_particle(vec2(101,100), vec2(1,0), 1, 1, "cyan");
 
-    REQUIRE(GasContainer::DetectCollision(particle, target_particle) == false);
+    REQUIRE(PhysicsEngine::DetectCollision(particle, target_particle) == false);
   }
 
   SECTION("Does not bounce from left") {
     Particle target_particle(vec2(99,100), vec2(-1,0), 1, 1, "cyan");
 
-    REQUIRE(GasContainer::DetectCollision(particle, target_particle) == false);
+    REQUIRE(PhysicsEngine::DetectCollision(particle, target_particle) == false);
   }
 
   SECTION("Does not bounce from top") {
     Particle target_particle(vec2(100,99), vec2(0,-1), 1, 1, "cyan");
 
-    REQUIRE(GasContainer::DetectCollision(particle, target_particle) == false);
+    REQUIRE(PhysicsEngine::DetectCollision(particle, target_particle) == false);
   }
 
   SECTION("Does not bounce from bottom") {
     Particle target_particle(vec2(100,101), vec2(0,1), 1, 1, "cyan");
 
-    REQUIRE(GasContainer::DetectCollision(particle, target_particle) == false);
+    REQUIRE(PhysicsEngine::DetectCollision(particle, target_particle) == false);
   }
 
   SECTION("Does not bounce diagonally") {
     Particle target_particle(vec2(101,99), vec2(1,-1), 1, 1, "cyan");
 
-    REQUIRE(GasContainer::DetectCollision(particle, target_particle) == false);
+    REQUIRE(PhysicsEngine::DetectCollision(particle, target_particle) == false);
   }
 
   SECTION("Does not bounce antidiagonally") {
     Particle target_particle(vec2(99,101), vec2(-1,1), 1, 1, "cyan");
 
-    REQUIRE(GasContainer::DetectCollision(particle, target_particle) == false);
+    REQUIRE(PhysicsEngine::DetectCollision(particle, target_particle) == false);
   }
 
   SECTION("Does not when still") {
     Particle target_particle(vec2(100,101), vec2(0,0), 1, 1, "cyan");
 
-    REQUIRE(GasContainer::DetectCollision(particle, target_particle) == false);
+    REQUIRE(PhysicsEngine::DetectCollision(particle, target_particle) == false);
   }
 }
 
@@ -251,8 +251,8 @@ TEST_CASE("Velocity update after particle collision") {
   SECTION("Collision from right particle") {
     Particle particle_moving_right(vec2(199,100), vec2(-1,0), 1, 1, "cyan");
     Particle target_particle(vec2(101,100), vec2(-1,0), 1, 1, "cyan");
-    particle_moving_right.SetVelocity(container.GetVelocityAfterCollision(particle_moving_right, target_particle));
-    target_particle.SetVelocity(container.GetVelocityAfterCollision(target_particle, particle_moving_right));
+    particle_moving_right.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_right, target_particle));
+    target_particle.SetVelocity(engine.GetVelocityAfterCollision(target_particle, particle_moving_right));
 
     REQUIRE(particle_moving_right.GetVelocity().x == -1.0);
     REQUIRE(particle_moving_right.GetVelocity().y == 0.0);
@@ -263,8 +263,8 @@ TEST_CASE("Velocity update after particle collision") {
   SECTION("Collision from left particle") {
     Particle particle_moving_left(vec2(100,100), vec2(-1,0), 1, 1, "cyan");
     Particle target_particle(vec2(99,100), vec2(1,0), 1, 1, "cyan");
-    particle_moving_left.SetVelocity(container.GetVelocityAfterCollision(particle_moving_left, target_particle));
-    target_particle.SetVelocity(container.GetVelocityAfterCollision(target_particle, particle_moving_left));
+    particle_moving_left.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_left, target_particle));
+    target_particle.SetVelocity(engine.GetVelocityAfterCollision(target_particle, particle_moving_left));
 
     REQUIRE(particle_moving_left.GetVelocity().x == 1.0);
     REQUIRE(particle_moving_left.GetVelocity().y == 0.0);
@@ -275,8 +275,8 @@ TEST_CASE("Velocity update after particle collision") {
   SECTION("Collision from top particle") {
     Particle particle_moving_up(vec2(100,100), vec2(0,1), 1, 1, "cyan");
     Particle target_particle(vec2(100, 101), vec2(0,-1), 1, 1, "cyan");
-    particle_moving_up.SetVelocity(container.GetVelocityAfterCollision(particle_moving_up, target_particle));
-    target_particle.SetVelocity(container.GetVelocityAfterCollision(target_particle, particle_moving_up));
+    particle_moving_up.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_up, target_particle));
+    target_particle.SetVelocity(engine.GetVelocityAfterCollision(target_particle, particle_moving_up));
 
     REQUIRE(particle_moving_up.GetVelocity().x == 0.0);
     REQUIRE(particle_moving_up.GetVelocity().y == -1.0);
@@ -287,8 +287,8 @@ TEST_CASE("Velocity update after particle collision") {
   SECTION("Collision from bottom particle") {
     Particle particle_moving_down(vec2(100,100), vec2(0,-1), 1, 1, "cyan");
     Particle target_particle(vec2(100, 99), vec2(0,1), 1, 1, "cyan");
-    particle_moving_down.SetVelocity(container.GetVelocityAfterCollision(particle_moving_down, target_particle));
-    target_particle.SetVelocity(container.GetVelocityAfterCollision(target_particle, particle_moving_down));
+    particle_moving_down.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_down, target_particle));
+    target_particle.SetVelocity(engine.GetVelocityAfterCollision(target_particle, particle_moving_down));
 
     REQUIRE(particle_moving_down.GetVelocity().x == 0.0);
     REQUIRE(particle_moving_down.GetVelocity().y == 1.0);
@@ -299,8 +299,8 @@ TEST_CASE("Velocity update after particle collision") {
   SECTION("Diagonal collision") {
     Particle particle_moving_diagonally(vec2(100,100), vec2(1,1), 1, 1, "cyan");
     Particle target_particle(vec2(101, 101), vec2(-1,-1), 1, 1, "cyan");
-    particle_moving_diagonally.SetVelocity(container.GetVelocityAfterCollision(particle_moving_diagonally, target_particle));
-    target_particle.SetVelocity(container.GetVelocityAfterCollision(target_particle, particle_moving_diagonally));
+    particle_moving_diagonally.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_diagonally, target_particle));
+    target_particle.SetVelocity(engine.GetVelocityAfterCollision(target_particle, particle_moving_diagonally));
 
     REQUIRE(particle_moving_diagonally.GetVelocity().x == -1.0);
     REQUIRE(particle_moving_diagonally.GetVelocity().y == -1.0);
@@ -311,8 +311,8 @@ TEST_CASE("Velocity update after particle collision") {
   SECTION("Antidiagonal collision") {
     Particle particle_moving_antidiagonally(vec2(100,100), vec2(-1,-1), 1, 1, "cyan");
     Particle target_particle(vec2(99, 99), vec2(1,1), 1, 1, "cyan");
-    particle_moving_antidiagonally.SetVelocity(container.GetVelocityAfterCollision(particle_moving_antidiagonally, target_particle));
-    target_particle.SetVelocity(container.GetVelocityAfterCollision(target_particle, particle_moving_antidiagonally));
+    particle_moving_antidiagonally.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_antidiagonally, target_particle));
+    target_particle.SetVelocity(engine.GetVelocityAfterCollision(target_particle, particle_moving_antidiagonally));
 
     REQUIRE(particle_moving_antidiagonally.GetVelocity().x == 1.0);
     REQUIRE(particle_moving_antidiagonally.GetVelocity().y == 1.0);
@@ -324,7 +324,7 @@ TEST_CASE("Velocity update after particle collision") {
 TEST_CASE("Position update after wall collision") {
   SECTION("Collision with top wall") {
     Particle particle(vec2(100, 0.9), vec2(0,-1), 1, 1, "cyan");
-    container.NegateVelocityOnWallCollision(particle);
+    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 100.0f);
@@ -333,7 +333,7 @@ TEST_CASE("Position update after wall collision") {
 
   SECTION("Collision with bottom wall") {
     Particle particle(vec2(100, 199.1), vec2(0,1), 1, 1, "cyan");
-    container.NegateVelocityOnWallCollision(particle);
+    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 100.0f);
@@ -342,7 +342,7 @@ TEST_CASE("Position update after wall collision") {
 
   SECTION("Collision with right wall") {
     Particle particle(vec2(199, 100), vec2(1,0), 1, 1, "cyan");
-    container.NegateVelocityOnWallCollision(particle);
+    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 198.0f);
@@ -351,7 +351,7 @@ TEST_CASE("Position update after wall collision") {
 
   SECTION("Collision with left wall") {
     Particle particle(vec2(1, 100), vec2(-1,0), 1, 1, "cyan");
-    container.NegateVelocityOnWallCollision(particle);
+    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 2.0f);
@@ -360,7 +360,7 @@ TEST_CASE("Position update after wall collision") {
 
   SECTION("Collision with top left corner") {
     Particle particle(vec2(0, 0), vec2(-1,-1), 1, 1, "cyan");
-    container.NegateVelocityOnWallCollision(particle);
+    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 1.0f);
@@ -369,7 +369,7 @@ TEST_CASE("Position update after wall collision") {
 
   SECTION("Collision with top right corner") {
     Particle particle(vec2(200, 0), vec2(1,-1), 1, 1, "cyan");
-    container.NegateVelocityOnWallCollision(particle);
+    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 199.0f);
@@ -378,7 +378,7 @@ TEST_CASE("Position update after wall collision") {
 
   SECTION("Collision with bottom left corner") {
     Particle particle(vec2(0, 200), vec2(-1,1), 1, 1, "cyan");
-    container.NegateVelocityOnWallCollision(particle);
+    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 1.0f);
@@ -387,7 +387,7 @@ TEST_CASE("Position update after wall collision") {
 
   SECTION("Collision with bottom right corner") {
     Particle particle(vec2(200, 200), vec2(1,1), 1, 1, "cyan");
-    container.NegateVelocityOnWallCollision(particle);
+    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 199.0f);

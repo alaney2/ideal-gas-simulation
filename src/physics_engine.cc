@@ -4,6 +4,8 @@ using std::vector;
 
 namespace idealgas {
 
+PhysicsEngine::PhysicsEngine() { }
+
 void PhysicsEngine::NegateVelocityOnWallCollision(const int window_size, const int margin, Particle& particle) {
   double lower_bound = margin + particle.GetRadius();
   double upper_bound = window_size - margin - particle.GetRadius();
