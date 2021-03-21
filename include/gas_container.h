@@ -39,32 +39,6 @@ class GasContainer {
   void GenerateParticles(std::vector<idealgas::Particle> &particles,
                          Particle &particle, size_t particle_amount);
 
-  /**
-   * Sets new velocity after hitting wall.
-   */
-  void NegateVelocityOnWallCollision(Particle &particle);
-
-  /**
-   * Detects if there is a collision between two particles.
-   * @param p1 first particle
-   * @param p2 second particle
-   * @return if there is a collision
-   */
-  static bool DetectCollision(const Particle &p1, const Particle &p2);
-
-  /**
-   * Sets new velocities of particles that have collided.
-   */
-  void AdjustVelocityOnCollision();
-
-  /**
-   * Gets the new velocity after a collision.
-   * @param p1 first particle
-   * @param p2 second particle
-   * @return new velocity vec2 after collision
-   */
-  static vec2 GetVelocityAfterCollision(const Particle &p1, const Particle &p2);
-
  private:
   const int kWindowSize_;         // size of application window
   const int kMargin_;             // size of margin surrounding container
