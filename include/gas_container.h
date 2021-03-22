@@ -3,8 +3,6 @@
 #include "cinder/gl/gl.h"
 #include "gas_particle.h"
 
-using glm::vec2;
-
 namespace idealgas {
 
 /**
@@ -17,8 +15,7 @@ class GasContainer {
   /**
    * The gas container used to hold the gas particles.
    */
-  GasContainer(const int kWindowLength, const int kWindowWidth,
-               const int kMargin, const ci::Color &kBorderColor);
+  GasContainer(const int kWindowLength, const int kMargin, const ci::Color &kBorderColor);
 
   /**
    * Displays the container walls and the current positions of the particles_.
@@ -38,7 +35,9 @@ class GasContainer {
    * @param particle_amount number of particles to generate
    */
   void GenerateParticles(std::vector<idealgas::Particle> &particles,
-                         Particle &particle, size_t particle_amount);
+                         const Particle &particle, size_t particle_amount);
+
+
 
  private:
   const int kWindowLength_;         // size of application window

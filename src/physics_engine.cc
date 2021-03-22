@@ -1,12 +1,12 @@
 #include "physics_engine.h"
 
-using std::vector;
+using glm::vec2;
 
 namespace idealgas {
 
 PhysicsEngine::PhysicsEngine() { }
 
-void PhysicsEngine::NegateVelocityOnWallCollision(const int window_length, const int margin, Particle& particle) {
+void PhysicsEngine::ParticleWallCollision(const int window_length, const int margin, Particle& particle) {
   double lower_bound = margin + particle.GetRadius();
   double upper_bound = window_length - margin - particle.GetRadius();
 
@@ -35,7 +35,7 @@ bool PhysicsEngine::DetectCollision(const Particle& p1, const Particle& p2) {
   return is_touching && is_moving_closer;
 }
 
-void PhysicsEngine::AdjustVelocityOnCollision(vector<idealgas::Particle> &particles) {
+void PhysicsEngine::AdjustVelocitiesOnCollision(vector<idealgas::Particle> &particles) {
   for (size_t i = 0; i < particles.size(); ++i) {
     for (size_t j = i + 1; j < particles.size(); ++j) {
       if (DetectCollision(particles[i], particles[j])) {

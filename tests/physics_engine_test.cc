@@ -330,7 +330,7 @@ TEST_CASE("Velocity update after particle collision") {
 TEST_CASE("Position update after wall collision") {
   SECTION("Collision with top wall") {
     Particle particle(vec2(100, 0.9), vec2(0,-1), 1, 1, "cyan");
-    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
+    engine.ParticleWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 100.0f);
@@ -339,7 +339,7 @@ TEST_CASE("Position update after wall collision") {
 
   SECTION("Collision with bottom wall") {
     Particle particle(vec2(100, 199.1), vec2(0,1), 1, 1, "cyan");
-    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
+    engine.ParticleWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 100.0f);
@@ -348,7 +348,7 @@ TEST_CASE("Position update after wall collision") {
 
   SECTION("Collision with right wall") {
     Particle particle(vec2(199, 100), vec2(1,0), 1, 1, "cyan");
-    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
+    engine.ParticleWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 198.0f);
@@ -357,7 +357,7 @@ TEST_CASE("Position update after wall collision") {
 
   SECTION("Collision with left wall") {
     Particle particle(vec2(1, 100), vec2(-1,0), 1, 1, "cyan");
-    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
+    engine.ParticleWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 2.0f);
@@ -366,7 +366,7 @@ TEST_CASE("Position update after wall collision") {
 
   SECTION("Collision with top left corner") {
     Particle particle(vec2(0, 0), vec2(-1,-1), 1, 1, "cyan");
-    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
+    engine.ParticleWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 1.0f);
@@ -375,7 +375,7 @@ TEST_CASE("Position update after wall collision") {
 
   SECTION("Collision with top right corner") {
     Particle particle(vec2(200, 0), vec2(1,-1), 1, 1, "cyan");
-    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
+    engine.ParticleWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 199.0f);
@@ -384,7 +384,7 @@ TEST_CASE("Position update after wall collision") {
 
   SECTION("Collision with bottom left corner") {
     Particle particle(vec2(0, 200), vec2(-1,1), 1, 1, "cyan");
-    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
+    engine.ParticleWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 1.0f);
@@ -393,7 +393,7 @@ TEST_CASE("Position update after wall collision") {
 
   SECTION("Collision with bottom right corner") {
     Particle particle(vec2(200, 200), vec2(1,1), 1, 1, "cyan");
-    engine.NegateVelocityOnWallCollision(kWindowSize, kMargin, particle);
+    engine.ParticleWallCollision(kWindowSize, kMargin, particle);
     particle.SetPosition(particle.GetPosition() + particle.GetVelocity());
 
     REQUIRE(particle.GetPosition().x == 199.0f);

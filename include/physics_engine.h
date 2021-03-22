@@ -3,9 +3,6 @@
 #include "cinder/gl/gl.h"
 #include "gas_particle.h"
 
-using glm::vec2;
-using std::vector;
-
 namespace idealgas {
 
 /**
@@ -20,7 +17,7 @@ class PhysicsEngine {
   /**
    * Sets new velocity after hitting wall.
    */
-  static void NegateVelocityOnWallCollision(const int window_length,
+  static void ParticleWallCollision(const int window_length,
                                             const int margin,
                                             Particle &particle);
 
@@ -35,7 +32,7 @@ class PhysicsEngine {
   /**
    * Sets new velocities of particles that have collided.
    */
-  static void AdjustVelocityOnCollision(vector<idealgas::Particle> &particles);
+  static void AdjustVelocitiesOnCollision(std::vector<idealgas::Particle> &particles);
 
   /**
    * Gets the new velocity after a collision.
@@ -43,7 +40,7 @@ class PhysicsEngine {
    * @param p2 second particle
    * @return new velocity vec2 after collision
    */
-  static vec2 GetVelocityAfterCollision(const Particle &p1, const Particle &p2);
+  static glm::vec2 GetVelocityAfterCollision(const Particle &p1, const Particle &p2);
 };
 
 }  // namespace idealgas

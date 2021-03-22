@@ -5,7 +5,7 @@ namespace idealgas {
 
 using glm::vec2;
 
-GasContainer::GasContainer(const int kWindowLength, const int kWindowWidth, const int kMargin,
+GasContainer::GasContainer(const int kWindowLength, const int kMargin,
                            const ci::Color &kBorderColor)
     : kWindowLength_(kWindowLength),
       kMargin_(kMargin),
@@ -32,16 +32,16 @@ void GasContainer::Display() const {
 }
 
 void GasContainer::AdvanceOneFrame() {
-  PhysicsEngine::AdjustVelocityOnCollision(particles_);
+  PhysicsEngine::AdjustVelocitiesOnCollision(particles_);
 
   for (auto &particle : particles_) {
-    PhysicsEngine::NegateVelocityOnWallCollision(kWindowLength_, kMargin_, particle);
+    PhysicsEngine::ParticleWallCollision(kWindowLength_, kMargin_, particle);
     particle.SetPosition(particle.GetPosition() += particle.GetVelocity());
   }
 }
 
 void GasContainer::GenerateParticles(std::vector<idealgas::Particle> &particles,
-                                     Particle &particle,
+                                     const Particle &particle,
                                      size_t particle_amount) {
   size_t max_particles =
       pow((kWindowLength_ - 2 * kMargin_) / (2 * particle.GetRadius()), 2);
