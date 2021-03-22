@@ -5,9 +5,11 @@ namespace idealgas {
 
 using glm::vec2;
 
-GasContainer::GasContainer(const int kWindowLength, const int kMargin,
+GasContainer::GasContainer(const int kWindowLength, const int kWindowWidth,
+                           const int kMargin,
                            const ci::Color &kBorderColor)
     : kWindowLength_(kWindowLength),
+      kWindowWidth_(kWindowWidth),
       kMargin_(kMargin),
       kBorderColor_(kBorderColor) {
   Particle green_particle(vec2(), vec2(4, 4), 15, 15, ci::Color("green"));
@@ -29,6 +31,7 @@ void GasContainer::Display() const {
   ci::gl::drawStrokedRect(
       ci::Rectf(vec2(kMargin_, kMargin_),
                 vec2(kWindowLength_ - kMargin_, kWindowLength_ - kMargin_)));
+  GasContainer::DrawHistogramBoxes();
 }
 
 void GasContainer::AdvanceOneFrame() {
@@ -41,7 +44,7 @@ void GasContainer::AdvanceOneFrame() {
 }
 
 void GasContainer::GenerateParticles(std::vector<idealgas::Particle> &particles,
-                                     const Particle &particle,
+                                     Particle &particle,
                                      size_t particle_amount) {
   size_t max_particles =
       pow((kWindowLength_ - 2 * kMargin_) / (2 * particle.GetRadius()), 2);
@@ -59,6 +62,17 @@ void GasContainer::GenerateParticles(std::vector<idealgas::Particle> &particles,
     particle.SetPosition(vec2(rand_x_pos, rand_y_pos));
     particles.push_back(particle);
   }
+}
+void GasContainer::DrawHistogramBoxes() const {
+  ci::gl::drawStrokedRect(
+      ci::Rectf(vec2(kWindowLength_, kMargin_),
+                vec2(kWindowWidth_ - kMargin_, kWindowLength_ - kMargin_)));
+  ci::gl::drawStrokedRect(
+      ci::Rectf(vec2(kWindowLength_, kMargin_),
+                vec2(kWindowWidth_ - kMargin_, kWindowLength_ - kMargin_)));
+  ci::gl::drawStrokedRect(
+      ci::Rectf(vec2(kWindowLength_, kMargin_),
+                vec2(kWindowWidth_ - kMargin_, kWindowLength_ - kMargin_)));
 }
 
 }  // namespace idealgas

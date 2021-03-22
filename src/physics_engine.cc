@@ -1,6 +1,7 @@
 #include "physics_engine.h"
 
 using glm::vec2;
+using std::vector;
 
 namespace idealgas {
 

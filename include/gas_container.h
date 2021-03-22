@@ -15,7 +15,8 @@ class GasContainer {
   /**
    * The gas container used to hold the gas particles.
    */
-  GasContainer(const int kWindowLength, const int kMargin, const ci::Color &kBorderColor);
+  GasContainer(const int kWindowLength, const int kWindowWidth,
+               const int kMargin, const ci::Color &kBorderColor);
 
   /**
    * Displays the container walls and the current positions of the particles_.
@@ -35,12 +36,15 @@ class GasContainer {
    * @param particle_amount number of particles to generate
    */
   void GenerateParticles(std::vector<idealgas::Particle> &particles,
-                         const Particle &particle, size_t particle_amount);
+                         Particle &particle, size_t particle_amount);
+
+  void DrawHistogramBoxes() const;
 
 
 
  private:
-  const int kWindowLength_;         // size of application window
+  const int kWindowLength_;       //
+  const int kWindowWidth_;        //
   const int kMargin_;             // size of margin surrounding container
   const ci::Color kBorderColor_;  // color of gas container border
   std::vector<idealgas::Particle>
