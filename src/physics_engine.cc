@@ -6,9 +6,9 @@ namespace idealgas {
 
 PhysicsEngine::PhysicsEngine() { }
 
-void PhysicsEngine::NegateVelocityOnWallCollision(const int window_size, const int margin, Particle& particle) {
+void PhysicsEngine::NegateVelocityOnWallCollision(const int window_length, const int margin, Particle& particle) {
   double lower_bound = margin + particle.GetRadius();
-  double upper_bound = window_size - margin - particle.GetRadius();
+  double upper_bound = window_length - margin - particle.GetRadius();
 
   double x_pos = particle.GetPosition().x;
   double y_pos = particle.GetPosition().y;

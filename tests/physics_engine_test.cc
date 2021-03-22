@@ -10,6 +10,12 @@ const int kWindowSize = 200;
 const int kMargin = 0;
 PhysicsEngine engine;
 
+TEST_CASE("Particle collisions with different mass") {
+  SECTION("") {
+    
+  }
+}
+
 TEST_CASE("Particle-particle collisions") {
   Particle particle_moving_right(vec2(100,100), vec2(1,0), 1, 1, "cyan");
   Particle particle_moving_left(vec2(100,100), vec2(-1,0), 1, 1, "cyan");

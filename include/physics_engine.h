@@ -20,7 +20,9 @@ class PhysicsEngine {
   /**
    * Sets new velocity after hitting wall.
    */
-  static void NegateVelocityOnWallCollision(const int window_size, const int margin, Particle &particle);
+  static void NegateVelocityOnWallCollision(const int window_length,
+                                            const int margin,
+                                            Particle &particle);
 
   /**
    * Detects if there is a collision between two particles.

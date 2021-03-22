@@ -3,8 +3,8 @@
 namespace idealgas {
 
 
-IdealGasApp::IdealGasApp() : container_(kWindowSize, kMargin, kBorderColor) {
-    ci::app::setWindowSize(kWindowSize, kWindowSize);
+IdealGasApp::IdealGasApp() : container_(kWindowLength, kWindowWidth, kMargin, kBorderColor) {
+    ci::app::setWindowSize(kWindowWidth, kWindowLength);
 }
 
 void IdealGasApp::draw() {

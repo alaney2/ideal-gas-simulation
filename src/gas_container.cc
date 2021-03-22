@@ -5,13 +5,18 @@ namespace idealgas {
 
 using glm::vec2;
 
-GasContainer::GasContainer(const int kWindowSize, const int kMargin,
+GasContainer::GasContainer(const int kWindowLength, const int kWindowWidth, const int kMargin,
                            const ci::Color &kBorderColor)
-    : kWindowSize_(kWindowSize),
+    : kWindowLength_(kWindowLength),
       kMargin_(kMargin),
       kBorderColor_(kBorderColor) {
-  Particle green_particle(vec2(), vec2(4, 4), 5, 10, ci::Color("green"));
-  GenerateParticles(particles_, green_particle, 60);
+  Particle green_particle(vec2(), vec2(4, 4), 15, 15, ci::Color("green"));
+  Particle red_particle(vec2(), vec2(4, 4), 10, 10, ci::Color("red"));
+  Particle orange_particle(vec2(), vec2(4, 4), 6, 6, ci::Color("orange"));
+
+  GenerateParticles(particles_, green_particle, 20);
+  GenerateParticles(particles_, red_particle, 20);
+  GenerateParticles(particles_, orange_particle, 20);
 }
 
 void GasContainer::Display() const {
@@ -23,14 +28,14 @@ void GasContainer::Display() const {
   ci::gl::color(kBorderColor_);
   ci::gl::drawStrokedRect(
       ci::Rectf(vec2(kMargin_, kMargin_),
-                vec2(kWindowSize_ - kMargin_, kWindowSize_ - kMargin_)));
+                vec2(kWindowLength_ - kMargin_, kWindowLength_ - kMargin_)));
 }
 
 void GasContainer::AdvanceOneFrame() {
   PhysicsEngine::AdjustVelocityOnCollision(particles_);
 
   for (auto &particle : particles_) {
-    PhysicsEngine::NegateVelocityOnWallCollision(kWindowSize_, kMargin_, particle);
+    PhysicsEngine::NegateVelocityOnWallCollision(kWindowLength_, kMargin_, particle);
     particle.SetPosition(particle.GetPosition() += particle.GetVelocity());
   }
 }
@@ -39,13 +44,13 @@ void GasContainer::GenerateParticles(std::vector<idealgas::Particle> &particles,
                                      Particle &particle,
                                      size_t particle_amount) {
   size_t max_particles =
-      pow((kWindowSize_ - 2 * kMargin_) / (2 * particle.GetRadius()), 2);
+      pow((kWindowLength_ - 2 * kMargin_) / (2 * particle.GetRadius()), 2);
   if (particle_amount > max_particles) {
     particle_amount = max_particles;
   }
 
   size_t lower_bound = kMargin_ + particle.GetRadius();
-  size_t upper_bound = kWindowSize_ - 2 * (kMargin_ + particle.GetRadius());
+  size_t upper_bound = kWindowLength_ - 2 * (kMargin_ + particle.GetRadius());
 
   for (size_t i = 0; i < particle_amount; ++i) {
     size_t rand_x_pos = (rand() % (upper_bound + 1)) + lower_bound;
