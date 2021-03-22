@@ -17,8 +17,8 @@ class IdealGasApp : public ci::app::App {
   void draw() override;
   void update() override;
 
-  const int kWindowLength = 750;
-  const int kWindowWidth = static_cast<int>(1.5 * kWindowLength);
+  const int kWindowLength = 800;
+  const int kWindowWidth = static_cast<int>(1.6 * kWindowLength);
   const int kMargin = 75;
   const ci::Color kBorderColor = ci::Color("white");
 
