@@ -29,30 +29,20 @@ void GasContainer::Display() const {
                             static_cast<float>(particle.GetRadius()));
   }
   ci::gl::color(kBorderColor_);
-
   ci::gl::drawStrokedRect(
       ci::Rectf(vec2(kMargin_, kMargin_),
-                vec2(kWindowLength_ - kMargin_, kWindowLength_ - kMargin_)));
-//  UpdateHistogram(vec2(kWindowLength_, kMargin_/2),
-//                  vec2(kWindowWidth_ - kMargin_, (kWindowLength_ - 2*kMargin_)/3 + kMargin_/2),
-//                  ci::Color("orange"));
-//  UpdateHistogram(vec2(kWindowLength_, (kWindowLength_ - 2*kMargin_)/3 + kMargin_),
-//                  vec2(kWindowWidth_ - kMargin_, 2*(kWindowLength_ - 2*kMargin_)/3 + kMargin_),
-//                  ci::Color("red"));
-//  UpdateHistogram(vec2(kWindowLength_, 2*(kWindowLength_ - 2*kMargin_)/3 + 3*kMargin_/2),
-//                  vec2(kWindowWidth_ - kMargin_, kWindowLength_ - kMargin_/2),
-//                  ci::Color("green"));
+                vec2(kWindowLength_ - kMargin_, kWindowLength_ - kMargin_)), 4);
+  GasContainer::DrawHistogramBoxes();
+
   DisplayHistogram(vec2(kWindowLength_, kMargin_/2),
                    vec2(kWindowWidth_ - kMargin_, (kWindowLength_ - 2*kMargin_)/3 + kMargin_/2),
                   ci::Color("orange"), fast_speeds_);
-//  DisplayHistogram(vec2(kWindowLength_, (kWindowLength_ - 2*kMargin_)/3 + kMargin_),
-//                   vec2(kWindowWidth_ - kMargin_, 2*(kWindowLength_ - 2*kMargin_)/3 + kMargin_),
-//                  ci::Color("red"), medium_speeds_);
-//  DisplayHistogram(vec2(kWindowLength_, 2*(kWindowLength_ - 2*kMargin_)/3 + 3*kMargin_/2),
-//                   vec2(kWindowWidth_ - kMargin_, kWindowLength_ - kMargin_/2),
-//                  ci::Color("green"), slow_speeds_);
-  ci::gl::color(kBorderColor_);
-  GasContainer::DrawHistogramBoxes();
+  DisplayHistogram(vec2(kWindowLength_, (kWindowLength_ - 2*kMargin_)/3 + kMargin_),
+                   vec2(kWindowWidth_ - kMargin_, 2*(kWindowLength_ - 2*kMargin_)/3 + kMargin_),
+                  ci::Color("red"), medium_speeds_);
+  DisplayHistogram(vec2(kWindowLength_, 2*(kWindowLength_ - 2*kMargin_)/3 + 3*kMargin_/2),
+                   vec2(kWindowWidth_ - kMargin_, kWindowLength_ - kMargin_/2),
+                  ci::Color("green"), slow_speeds_);
 }
 
 void GasContainer::AdvanceOneFrame() {
@@ -64,15 +54,6 @@ void GasContainer::AdvanceOneFrame() {
   }
 
   UpdateHistograms();
-//  UpdateHistogram(vec2(kWindowLength_, kMargin_/2),
-//                  vec2(kWindowWidth_ - kMargin_, (kWindowLength_ - 2*kMargin_)/3 + kMargin_/2),
-//                  ci::Color("orange"));
-//  UpdateHistogram(vec2(kWindowLength_, (kWindowLength_ - 2*kMargin_)/3 + kMargin_),
-//      vec2(kWindowWidth_ - kMargin_, 2*(kWindowLength_ - 2*kMargin_)/3 + kMargin_),
-//                  ci::Color("red"));
-//  UpdateHistogram(vec2(kWindowLength_, 2*(kWindowLength_ - 2*kMargin_)/3 + 3*kMargin_/2),
-//      vec2(kWindowWidth_ - kMargin_, kWindowLength_ - kMargin_/2),
-//                  ci::Color("green"));
 }
 
 void GasContainer::GenerateParticles(vector<idealgas::Particle> &particles,
@@ -97,15 +78,16 @@ void GasContainer::GenerateParticles(vector<idealgas::Particle> &particles,
 }
 
 void GasContainer::DrawHistogramBoxes() const {
+  ci::gl::color(kBorderColor_);
   ci::gl::drawStrokedRect(
       ci::Rectf(vec2(kWindowLength_, kMargin_/2),
-                vec2(kWindowWidth_ - kMargin_, (kWindowLength_ - 2*kMargin_)/3 + kMargin_/2)));
+                vec2(kWindowWidth_ - kMargin_, (kWindowLength_ - 2*kMargin_)/3 + kMargin_/2)), 2);
   ci::gl::drawStrokedRect(
       ci::Rectf(vec2(kWindowLength_, (kWindowLength_ - 2*kMargin_)/3 + kMargin_),
-                vec2(kWindowWidth_ - kMargin_, 2*(kWindowLength_ - 2*kMargin_)/3 + kMargin_)));
+                vec2(kWindowWidth_ - kMargin_, 2*(kWindowLength_ - 2*kMargin_)/3 + kMargin_)), 2);
   ci::gl::drawStrokedRect(
       ci::Rectf(vec2(kWindowLength_, 2*(kWindowLength_ - 2*kMargin_)/3 + 3*kMargin_/2),
-                vec2(kWindowWidth_ - kMargin_, kWindowLength_ - kMargin_/2)));
+                vec2(kWindowWidth_ - kMargin_, kWindowLength_ - kMargin_/2)), 2);
 }
 
 void GasContainer::UpdateHistograms() {
@@ -123,9 +105,8 @@ void GasContainer::UpdateHistograms() {
     }
   }
   max_speed_ = static_cast<int>(max_speed);
-
-  for (size_t bin = 0; bin < num_bins_; ++bin) {
-    for (size_t i = 0; i < particles_.size(); ++i) {
+  for (size_t i = 0; i < particles_.size(); ++i) {
+    for (size_t bin = 0; bin < num_bins_; ++bin) {
       if (particles_[i].GetSpeed() <= max_speed_ * (static_cast<double>((bin + 1.0) / num_bins_))) {
         if (particles_[i].GetColor() == ci::Color("orange")) {
           fast_speeds_[bin] += 1;
@@ -134,6 +115,7 @@ void GasContainer::UpdateHistograms() {
         } else if (particles_[i].GetColor() == ci::Color("green")) {
           slow_speeds_[bin] += 1;
         }
+        break;
       }
     }
   }
@@ -160,21 +142,24 @@ void GasContainer::DisplayHistogram(const glm::vec2 &top_left_corner,
                                     const ci::Color &color,
                                     std::map<int, int> speeds) const {
   int max_height = 0;
-  for (size_t bin = 0; bin < speeds.size(); ++bin) {
-    if (speeds[bin] > max_height) {
-      max_height = speeds[bin];
+//  for (size_t bin = 0; bin < speeds.size(); ++bin) {
+//    if (speeds[bin] > max_height) {
+//      max_height = speeds[bin];
+//    }
+//  }
+  for (auto const& speed : speeds) {
+    if (speed.second > max_height) {
+      max_height = speed.second;
     }
   }
-
   float bin_width = (bottom_right_corner.x - top_left_corner.x) / static_cast<float>(num_bins_);
   for (size_t bin = 0; bin < num_bins_; ++bin) {
-//    if (bin == 0) {
-//      std::cout << top_left_corner.x + bin*bin_width << std::endl;
-//    }
+    float bin_height_ratio = static_cast<float>(static_cast<float>(speeds[bin])/(max_height * 1.0));
     ci::gl::color(color);
     ci::gl::drawStrokedRect(
-        ci::Rectf(vec2(top_left_corner.x + bin*bin_width, top_left_corner.y * (speeds[bin]/max_height)),
-                  vec2((bin + 1.0) * bin_width, bottom_right_corner.y)));
+        ci::Rectf(vec2(top_left_corner.x + bin*bin_width,
+                       bottom_right_corner.y - ((bottom_right_corner.y - top_left_corner.y) * bin_height_ratio)),
+                  vec2(top_left_corner.x + (bin + 1.0) * bin_width, bottom_right_corner.y)));
   }
 }
 

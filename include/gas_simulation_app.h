@@ -19,7 +19,7 @@ class IdealGasApp : public ci::app::App {
 
   const int kWindowLength = 800;
   const int kWindowWidth = static_cast<int>(1.6 * kWindowLength);
-  const int kMargin = 75;
+  const int kMargin = 80;
   const ci::Color kBorderColor = ci::Color("white");
 
  private:
