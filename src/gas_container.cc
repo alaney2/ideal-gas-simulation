@@ -79,6 +79,8 @@ void GasContainer::GenerateParticles(vector<idealgas::Particle> &particles,
 }
 
 void GasContainer::DrawHistogramBoxes() const {
+  ci::gl::drawStringCentered("Speed", vec2((kWindowLength_ + kWindowWidth_ - kMargin_)/2, kMargin_/4));
+  ci::gl::drawStringCentered("1/λ", vec2(kWindowWidth_ - kMargin_*0.75, kWindowLength_/2));
   ci::gl::color(kBorderColor_);
   ci::gl::drawStrokedRect(
       ci::Rectf(vec2(kWindowLength_, kMargin_/2),
@@ -92,28 +94,16 @@ void GasContainer::DrawHistogramBoxes() const {
 }
 
 void GasContainer::UpdateHistograms() {
-  for (size_t bin = 0; bin < num_bins_; ++bin) {
-    slow_speeds_[bin] = 0;
-    medium_speeds_[bin] = 0;
-    fast_speeds_[bin] = 0;
-  }
-
-  double max_speed = 0;
-  for (size_t i = 0; i < particles_.size(); ++i) {
-    double particle_speed = particles_[i].GetSpeed();
-    if (particle_speed > max_speed) {
-      max_speed = particle_speed;
-    }
-  }
-  max_speed_ = static_cast<int>(max_speed);
-  for (size_t i = 0; i < particles_.size(); ++i) {
+  ResetHistograms();
+  int max_speed = MaxParticleSpeed();
+  for (auto & particle : particles_) {
     for (size_t bin = 0; bin < num_bins_; ++bin) {
-      if (particles_[i].GetSpeed() <= max_speed_ * (static_cast<double>((bin + 1.0) / num_bins_))) {
-        if (particles_[i].GetColor() == ci::Color("orange")) {
+      if (particle.GetSpeed() <= max_speed * (static_cast<double>((bin + 1.0) / num_bins_))) {
+        if (particle.GetColor() == ci::Color("orange")) {
           fast_speeds_[bin] += 1;
-        } else if (particles_[i].GetColor() == ci::Color("red")) {
+        } else if (particle.GetColor() == ci::Color("red")) {
           medium_speeds_[bin] += 1;
-        } else if (particles_[i].GetColor() == ci::Color("green")) {
+        } else if (particle.GetColor() == ci::Color("green")) {
           slow_speeds_[bin] += 1;
         }
         break;
@@ -140,8 +130,29 @@ void GasContainer::DisplayHistogram(const glm::vec2 &top_left_corner,
     ci::gl::drawStrokedRect(
         ci::Rectf(vec2(top_left_corner.x + bin*bin_width,
                        bottom_right_corner.y - ((bottom_right_corner.y - top_left_corner.y) * bin_height_ratio * 0.9)),
-                  vec2(top_left_corner.x + (bin + 1.0) * bin_width, bottom_right_corner.y)));
+                  vec2(top_left_corner.x + (bin + 1.0) * bin_width, bottom_right_corner.y)), 2);
   }
+}
+
+void GasContainer::ResetHistograms() {
+  for (size_t bin = 0; bin < num_bins_; ++bin) {
+    slow_speeds_[bin] = 0;
+    medium_speeds_[bin] = 0;
+    fast_speeds_[bin] = 0;
+  }
+}
+
+int GasContainer::MaxParticleSpeed() const {
+  double max_speed = 0;
+  for (auto & particle : particles_) {
+    double particle_speed = particle.GetSpeed();
+    if (particle_speed > max_speed) {
+      max_speed = particle_speed;
+    }
+  }
+  max_speed = static_cast<int>(max_speed);
+
+  return max_speed;
 }
 
 }  // namespace idealgas

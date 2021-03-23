@@ -47,6 +47,10 @@ class GasContainer {
                         const ci::Color &color,
                         std::map<int, int> speeds) const;
 
+  void ResetHistograms();
+
+  int MaxParticleSpeed() const;
+
  private:
   const int kWindowLength_;       //
   const int kWindowWidth_;        //
@@ -56,8 +60,7 @@ class GasContainer {
   std::map<int, int> slow_speeds_;
   std::map<int, int> medium_speeds_;
   std::map<int, int> fast_speeds_;
-  int max_speed_;
-  const int num_bins_ = 8;
+  const size_t num_bins_ = 8;
 };
 
 }  // namespace idealgas
