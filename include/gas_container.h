@@ -40,15 +40,24 @@ class GasContainer {
 
   void DrawHistogramBoxes() const;
 
+  void UpdateHistograms();
 
+  void DisplayHistogram(const glm::vec2 &top_left_corner,
+                        const glm::vec2 &bottom_right_corner,
+                        const ci::Color &color,
+                        std::map<int, int> speeds) const;
 
  private:
   const int kWindowLength_;       //
   const int kWindowWidth_;        //
   const int kMargin_;             // size of margin surrounding container
   const ci::Color kBorderColor_;  // color of gas container border
-  std::vector<idealgas::Particle>
-      particles_;  // vector of particles in container
+  std::vector<idealgas::Particle> particles_;  // vector of particles in container
+  std::map<int, int> slow_speeds_;
+  std::map<int, int> medium_speeds_;
+  std::map<int, int> fast_speeds_;
+  int max_speed_;
+  const int num_bins_ = 8;
 };
 
 }  // namespace idealgas

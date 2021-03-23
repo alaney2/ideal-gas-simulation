@@ -12,6 +12,7 @@ class Particle {
   Particle(const glm::vec2& position, const glm::vec2& velocity, int mass,
            int radius, const ci::Color& color);
 
+  double GetSpeed();
   glm::vec2 GetPosition() const;
   glm::vec2 GetVelocity() const;
   double GetMass() const;

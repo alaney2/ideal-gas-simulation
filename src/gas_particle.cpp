@@ -11,6 +11,10 @@ Particle::Particle(const glm::vec2& position, const glm::vec2& velocity,
       color_(color) {
 }
 
+double Particle::GetSpeed() {
+  return glm::length(velocity_);
+}
+
 glm::vec2 Particle::GetPosition() const {
   return position_;
 }
