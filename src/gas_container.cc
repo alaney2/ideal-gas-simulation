@@ -32,7 +32,6 @@ void GasContainer::Display() const {
   ci::gl::drawStrokedRect(
       ci::Rectf(vec2(kMargin_, kMargin_),
                 vec2(kWindowLength_ - kMargin_, kWindowLength_ - kMargin_)), 4);
-  GasContainer::DrawHistogramBoxes();
 
   DisplayHistogram(vec2(kWindowLength_, kMargin_/2),
                    vec2(kWindowWidth_ - kMargin_, (kWindowLength_ - 2*kMargin_)/3 + kMargin_/2),
@@ -43,6 +42,8 @@ void GasContainer::Display() const {
   DisplayHistogram(vec2(kWindowLength_, 2*(kWindowLength_ - 2*kMargin_)/3 + 3*kMargin_/2),
                    vec2(kWindowWidth_ - kMargin_, kWindowLength_ - kMargin_/2),
                   ci::Color("green"), slow_speeds_);
+
+  GasContainer::DrawHistogramBoxes();
 }
 
 void GasContainer::AdvanceOneFrame() {
@@ -119,22 +120,6 @@ void GasContainer::UpdateHistograms() {
       }
     }
   }
-//  double speed_diff = max_speed - min_speed;
-//  if (speed_diff == 0) {
-//    num_bins = 1;
-//  } else if (speed_diff <= 0.8){
-//    num_bins = static_cast<int>(speed_diff * 10);
-//  } else {
-//    num_bins = 8;
-//  }
-//
-//  float bin_width = (bottom_right_corner.x - top_left_corner.x) / static_cast<float>(num_bins);
-//  ci::gl::color(color);
-//  for (size_t i = 0; i < num_bins; ++i) {
-//    ci::gl::drawSolidRect(
-//        ci::Rectf(vec2(top_left_corner.x + i*bin_width, top_left_corner.y),
-//                  vec2(bottom_right_corner.x + i*bin_width, bottom_right_corner.y)));
-//  }
 }
 
 void GasContainer::DisplayHistogram(const glm::vec2 &top_left_corner,
@@ -142,23 +127,19 @@ void GasContainer::DisplayHistogram(const glm::vec2 &top_left_corner,
                                     const ci::Color &color,
                                     std::map<int, int> speeds) const {
   int max_height = 0;
-//  for (size_t bin = 0; bin < speeds.size(); ++bin) {
-//    if (speeds[bin] > max_height) {
-//      max_height = speeds[bin];
-//    }
-//  }
   for (auto const& speed : speeds) {
     if (speed.second > max_height) {
       max_height = speed.second;
     }
   }
+
   float bin_width = (bottom_right_corner.x - top_left_corner.x) / static_cast<float>(num_bins_);
   for (size_t bin = 0; bin < num_bins_; ++bin) {
     float bin_height_ratio = static_cast<float>(static_cast<float>(speeds[bin])/(max_height * 1.0));
     ci::gl::color(color);
     ci::gl::drawStrokedRect(
         ci::Rectf(vec2(top_left_corner.x + bin*bin_width,
-                       bottom_right_corner.y - ((bottom_right_corner.y - top_left_corner.y) * bin_height_ratio)),
+                       bottom_right_corner.y - ((bottom_right_corner.y - top_left_corner.y) * bin_height_ratio * 0.9)),
                   vec2(top_left_corner.x + (bin + 1.0) * bin_width, bottom_right_corner.y)));
   }
 }
