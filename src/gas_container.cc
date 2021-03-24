@@ -6,8 +6,8 @@ namespace idealgas {
 using std::vector;
 using glm::vec2;
 
-GasContainer::GasContainer(const int kWindowLength, const int kWindowWidth,
-                           const int kMargin,
+GasContainer::GasContainer(const size_t kWindowLength,
+                           const size_t kWindowWidth, const size_t kMargin,
                            const ci::Color &kBorderColor)
     : kWindowLength_(kWindowLength),
       kWindowWidth_(kWindowWidth),

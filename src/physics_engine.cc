@@ -7,7 +7,8 @@ namespace idealgas {
 
 PhysicsEngine::PhysicsEngine() { }
 
-void PhysicsEngine::ParticleWallCollision(const int window_length, const int margin, Particle& particle) {
+void PhysicsEngine::ParticleWallCollision(const size_t window_length,
+                                          const size_t margin, Particle& particle) {
   double lower_bound = margin + particle.GetRadius();
   double upper_bound = window_length - margin - particle.GetRadius();
 

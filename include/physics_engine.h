@@ -6,19 +6,17 @@
 namespace idealgas {
 
 /**
- *
+ * The engine which runs all the calculations for the particles in the gas container.
  */
 class PhysicsEngine {
  public:
-  /**
-   *
-   */
   PhysicsEngine();
+
   /**
    * Sets new velocity after hitting wall.
    */
-  static void ParticleWallCollision(const int window_length,
-                                            const int margin,
+  static void ParticleWallCollision(const size_t window_length,
+                                    const size_t margin,
                                             Particle &particle);
 
   /**

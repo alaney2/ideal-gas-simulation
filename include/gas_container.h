@@ -15,8 +15,8 @@ class GasContainer {
   /**
    * The gas container used to hold the gas particles.
    */
-  GasContainer(const int kWindowLength, const int kWindowWidth,
-               const int kMargin, const ci::Color &kBorderColor);
+  GasContainer(const size_t kWindowLength, const size_t kWindowWidth,
+               const size_t kMargin, const ci::Color &kBorderColor);
 
   /**
    * Displays the container walls and the current positions of the particles_.
@@ -87,9 +87,9 @@ class GasContainer {
 
  private:
   int frames = 0;
-  const int kWindowLength_;          // length of the application window
-  const int kWindowWidth_;           // width of the application window
-  const int kMargin_;                // size of margin surrounding container
+  const size_t kWindowLength_;          // length of the application window
+  const size_t kWindowWidth_;           // width of the application window
+  const size_t kMargin_;                // size of margin surrounding container
   const ci::Color kBorderColor_;     // color of gas container border
   std::vector<idealgas::Particle> particles_;
                                      // vector of particles in container
