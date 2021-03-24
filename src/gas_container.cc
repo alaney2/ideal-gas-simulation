@@ -14,12 +14,12 @@ GasContainer::GasContainer(const size_t kWindowLength,
       kMargin_(kMargin),
       kBorderColor_(kBorderColor) {
   Particle orange_particle(vec2(), vec2(4, 4), 6, 6, ci::Color("orange"));
-  Particle red_particle(vec2(), vec2(3, 2), 10, 10, ci::Color("red"));
-  Particle green_particle(vec2(), vec2(2, 2), 15, 15, ci::Color("green"));
+  Particle red_particle(vec2(), vec2(3, 2), 12, 12, ci::Color("red"));
+  Particle green_particle(vec2(), vec2(2, 2), 18, 18, ci::Color("green"));
 
-  GenerateParticles(particles_, green_particle, 30);
-  GenerateParticles(particles_, red_particle, 30);
-  GenerateParticles(particles_, orange_particle, 30);
+  GenerateParticles(particles_, green_particle, 33);
+  GenerateParticles(particles_, red_particle, 33);
+  GenerateParticles(particles_, orange_particle, 33);
 }
 
 void GasContainer::Display() const {
@@ -53,8 +53,8 @@ void GasContainer::AdvanceOneFrame() {
     PhysicsEngine::ParticleWallCollision(kWindowLength_, kMargin_, particle);
     particle.SetPosition(particle.GetPosition() += particle.GetVelocity());
   }
-  // Update every three frames
-  if (frames % 3 == 0) {
+  // Update every two frames
+  if (frames % 2 == 0) {
     UpdateHistograms();
   }
 }
@@ -82,7 +82,7 @@ void GasContainer::GenerateParticles(vector<idealgas::Particle> &particles,
 
 void GasContainer::DrawHistogramBoxes() const {
   ci::gl::drawStringCentered("Speed", vec2((kWindowLength_ + kWindowWidth_ - kMargin_)/2, kMargin_/4));
-  ci::gl::drawStringCentered("1/λ", vec2(kWindowWidth_ - kMargin_*0.67, kWindowLength_/2));
+  ci::gl::drawStringCentered("1 / λ", vec2(kWindowWidth_ - kMargin_*0.67, kWindowLength_/2));
   ci::gl::color(kBorderColor_);
   ci::gl::drawStrokedRect(
       ci::Rectf(vec2(kWindowLength_, kMargin_/2),
@@ -112,22 +112,18 @@ void GasContainer::UpdateHistograms() {
       }
     }
   }
+
+  CalculateMaxHeight();
 }
 
 void GasContainer::DisplayHistogram(const glm::vec2 &top_left_corner,
                                     const glm::vec2 &bottom_right_corner,
                                     const ci::Color &color,
                                     std::map<int, int> speeds) const {
-  int max_height = 0;
-  for (auto const& speed : speeds) {
-    if (speed.second > max_height) {
-      max_height = speed.second;
-    }
-  }
 
   float bin_width = (bottom_right_corner.x - top_left_corner.x) / static_cast<float>(num_bins_);
   for (size_t bin = 0; bin < num_bins_; ++bin) {
-    float bin_height_ratio = static_cast<float>(static_cast<float>(speeds[bin])/(max_height * 1.0));
+    float bin_height_ratio = static_cast<float>(static_cast<float>(speeds[bin])/(max_height_ * 1.0));
     ci::gl::color(color);
     ci::gl::drawStrokedRect(
         ci::Rectf(vec2(top_left_corner.x + bin*bin_width,
@@ -174,6 +170,28 @@ std::map<int, int> GasContainer::GetMap(const ci::Color& color) const {
   } else {
     return slow_speeds_;
   }
+}
+void GasContainer::CalculateMaxHeight() {
+  int max_height = 0;
+  for (auto const& speed : fast_speeds_) {
+    if (speed.second > max_height) {
+      max_height = speed.second;
+    }
+  }
+
+  for (auto const& speed : medium_speeds_) {
+    if (speed.second > max_height) {
+      max_height = speed.second;
+    }
+  }
+
+  for (auto const& speed : slow_speeds_) {
+    if (speed.second > max_height) {
+      max_height = speed.second;
+    }
+  }
+
+  max_height_ = max_height;
 }
 
 }  // namespace idealgas

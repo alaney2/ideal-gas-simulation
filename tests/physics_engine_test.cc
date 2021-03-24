@@ -16,6 +16,9 @@ TEST_CASE("Particle collisions with different mass") {
     Particle light_particle(vec2(102, 100), vec2(-1, 0), 1, 1, "cyan");
     REQUIRE(PhysicsEngine::DetectCollision(heavy_particle, light_particle));
 
+    REQUIRE(heavy_particle.GetSpeed() == 1);
+    REQUIRE(light_particle.GetSpeed() == 1);
+
     heavy_particle.SetVelocity(engine.GetVelocityAfterCollision(heavy_particle, light_particle));
     light_particle.SetVelocity(engine.GetVelocityAfterCollision(light_particle, heavy_particle));
 
@@ -75,6 +78,8 @@ TEST_CASE("Particle collisions in simulation with more than two particles") {
     REQUIRE(PhysicsEngine::DetectCollision(particle_moving_diagonally, particle_moving_antidiagonally));
     particle_moving_diagonally.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_diagonally, particle_moving_antidiagonally));
     particle_moving_antidiagonally.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_antidiagonally, particle_moving_diagonally));
+
+    REQUIRE(particle_moving_diagonally.GetSpeed() == Approx(1.414213));
 
     REQUIRE(particle_moving_diagonally.GetVelocity().x == -1.0f);
     REQUIRE(particle_moving_diagonally.GetVelocity().y == -1.0f);

@@ -85,18 +85,25 @@ class GasContainer {
    */
   std::map<int, int> GetMap(const ci::Color& color) const;
 
+  /**
+   * Calculates the most amount of particles there are in a histogram bin
+   * and sets the max height.
+   */
+  void CalculateMaxHeight();
+
  private:
   int frames = 0;
-  const size_t kWindowLength_;          // length of the application window
-  const size_t kWindowWidth_;           // width of the application window
-  const size_t kMargin_;                // size of margin surrounding container
+  const size_t kWindowLength_;       // length of the application window
+  const size_t kWindowWidth_;        // width of the application window
+  const size_t kMargin_;             // size of margin surrounding container
   const ci::Color kBorderColor_;     // color of gas container border
   std::vector<idealgas::Particle> particles_;
                                      // vector of particles in container
   std::map<int, int> slow_speeds_;   // map of how many particles are in each bin for the slow particles
   std::map<int, int> medium_speeds_; // medium particles
   std::map<int, int> fast_speeds_;   // fast particles
-  const size_t num_bins_ = 8;        // number of bins in each histogram
+  const size_t num_bins_ = 12;       // number of bins in each histogram
+  size_t max_height_ = 0;            // most amount of particles in a histogram bin
 };
 
 }  // namespace idealgas
