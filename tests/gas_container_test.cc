@@ -14,7 +14,6 @@ TEST_CASE("Map size update") {
   Particle particle_two(glm::vec2{20,20}, glm::vec2{2,2}, 5, 5, "orange");
 
   SECTION("Single orange particle") {
-
     particles_.push_back(particle);
     container.UpdateHistograms();
     std::map<int, int> histogram_map_ = container.GetMap("orange");
