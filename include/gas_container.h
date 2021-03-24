@@ -38,30 +38,50 @@ class GasContainer {
   void GenerateParticles(std::vector<idealgas::Particle> &particles,
                          Particle &particle, size_t particle_amount);
 
+  /**
+   * Draws the outlines for the histograms
+   */
   void DrawHistogramBoxes() const;
 
+  /**
+   * Updates three maps of different particles
+   */
   void UpdateHistograms();
 
+  /**
+   * Draws histogram bins
+   * @param top_left_corner of histogram
+   * @param bottom_right_corner of histogram
+   * @param color of particles and histogram bins
+   * @param speeds map of how many particles are in each bin
+   */
   void DisplayHistogram(const glm::vec2 &top_left_corner,
                         const glm::vec2 &bottom_right_corner,
                         const ci::Color &color,
                         std::map<int, int> speeds) const;
 
+  /**
+   * sets all values of keys in histogram maps to 0
+   */
   void ResetHistograms();
 
+  /**
+   * @return speed of fastest particle
+   */
   int MaxParticleSpeed() const;
 
  private:
   int frames = 0;
-  const int kWindowLength_;       //
-  const int kWindowWidth_;        //
-  const int kMargin_;             // size of margin surrounding container
-  const ci::Color kBorderColor_;  // color of gas container border
-  std::vector<idealgas::Particle> particles_;  // vector of particles in container
-  std::map<int, int> slow_speeds_;
-  std::map<int, int> medium_speeds_;
-  std::map<int, int> fast_speeds_;
-  const size_t num_bins_ = 8;
+  const int kWindowLength_;          // length of the application window
+  const int kWindowWidth_;           // width of the application window
+  const int kMargin_;                // size of margin surrounding container
+  const ci::Color kBorderColor_;     // color of gas container border
+  std::vector<idealgas::Particle> particles_;
+                                     // vector of particles in container
+  std::map<int, int> slow_speeds_;   // map of how many particles are in each bin for the slow particles
+  std::map<int, int> medium_speeds_; // medium particles
+  std::map<int, int> fast_speeds_;   // fast particles
+  const size_t num_bins_ = 8;        // number of bins in each histogram
 };
 
 }  // namespace idealgas

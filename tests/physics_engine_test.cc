@@ -43,6 +43,54 @@ TEST_CASE("Particle collisions with different mass") {
   }
 }
 
+TEST_CASE("Particle collisions with different radii") {
+  Particle particle_moving_right(vec2(100,100), vec2(1,0), 1, 1, "cyan");
+
+  SECTION("Different radii and same mass") {
+    Particle target_particle(vec2(101,100), vec2(-1,0),1,5,"cyan");
+    REQUIRE(PhysicsEngine::DetectCollision(particle_moving_right, target_particle));
+
+    particle_moving_right.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_right, target_particle));
+    target_particle.SetVelocity(engine.GetVelocityAfterCollision(target_particle, particle_moving_right));
+
+    particle_moving_right.SetPosition(particle_moving_right.GetPosition() + particle_moving_right.GetVelocity());
+    target_particle.SetPosition(target_particle.GetPosition() + target_particle.GetVelocity());
+
+    REQUIRE(particle_moving_right.GetPosition().x == 99.0f);
+    REQUIRE(particle_moving_right.GetPosition().y == 100.0f);
+    REQUIRE(target_particle.GetPosition().x == 100.0f);
+    REQUIRE(target_particle.GetPosition().y == 100.0f);
+  }
+}
+
+TEST_CASE("Particle collisions in simulation with more than two particles") {
+  SECTION("Simulation") {
+    Particle particle_moving_right(vec2(100,100), vec2(1,0), 1, 1, "cyan");
+    Particle particle_moving_left(vec2(102,102), vec2(-1,0), 1, 1, "cyan");
+    Particle particle_moving_up(vec2(104,104), vec2(0,1), 1, 1, "cyan");
+    Particle particle_moving_down(vec2(106,106), vec2(0,-1), 1, 1, "cyan");
+    Particle particle_moving_diagonally(vec2(108,108), vec2(1,1), 1, 1, "cyan");
+    Particle particle_moving_antidiagonally(vec2(109,109), vec2(-1,-1), 1, 1, "cyan");
+
+    REQUIRE(PhysicsEngine::DetectCollision(particle_moving_diagonally, particle_moving_antidiagonally));
+    particle_moving_diagonally.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_diagonally, particle_moving_antidiagonally));
+    particle_moving_antidiagonally.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_antidiagonally, particle_moving_diagonally));
+
+    REQUIRE(particle_moving_diagonally.GetVelocity().x == -1.0f);
+    REQUIRE(particle_moving_diagonally.GetVelocity().y == -1.0f);
+    REQUIRE(particle_moving_antidiagonally.GetVelocity().x == -1.0f);
+    REQUIRE(particle_moving_antidiagonally.GetVelocity().y == -1.0f);
+
+    particle_moving_diagonally.SetPosition(particle_moving_diagonally.GetPosition() + particle_moving_diagonally.GetVelocity());
+    particle_moving_antidiagonally.SetPosition(particle_moving_antidiagonally.GetPosition() + particle_moving_antidiagonally.GetVelocity());
+
+    REQUIRE(particle_moving_diagonally.GetPosition().x == 107.0f);
+    REQUIRE(particle_moving_diagonally.GetPosition().y == 107.0f);
+    REQUIRE(particle_moving_antidiagonally.GetPosition().x == 108.0f);
+    REQUIRE(particle_moving_antidiagonally.GetPosition().y == 108.0f);
+  }
+}
+
 TEST_CASE("Particle-particle collisions") {
   Particle particle_moving_right(vec2(100,100), vec2(1,0), 1, 1, "cyan");
   Particle particle_moving_left(vec2(100,100), vec2(-1,0), 1, 1, "cyan");
