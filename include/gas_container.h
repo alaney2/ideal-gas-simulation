@@ -70,6 +70,16 @@ class GasContainer {
    */
   int MaxParticleSpeed() const;
 
+  /**
+   * Slows down all particles
+   */
+  void SlowDownParticles();
+
+  /**
+   * Speeds up all particles
+   */
+  void SpeedUpParticles();
+
  private:
   int frames = 0;
   const int kWindowLength_;          // length of the application window

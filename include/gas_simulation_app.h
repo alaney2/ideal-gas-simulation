@@ -16,6 +16,7 @@ class IdealGasApp : public ci::app::App {
 
   void draw() override;
   void update() override;
+  void keyDown(cinder::app::KeyEvent event) override;
 
   const int kWindowLength = 800;
   const int kWindowWidth = static_cast<int>(1.6 * kWindowLength);

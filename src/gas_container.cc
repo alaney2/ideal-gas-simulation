@@ -53,8 +53,8 @@ void GasContainer::AdvanceOneFrame() {
     PhysicsEngine::ParticleWallCollision(kWindowLength_, kMargin_, particle);
     particle.SetPosition(particle.GetPosition() += particle.GetVelocity());
   }
-  // Update every five frames
-  if (frames % 5 == 0) {
+  // Update every three frames
+  if (frames % 3 == 0) {
     UpdateHistograms();
   }
 }
@@ -154,6 +154,17 @@ int GasContainer::MaxParticleSpeed() const {
   }
 
   return static_cast<int>(max_speed);
+}
+
+void GasContainer::SlowDownParticles() {
+  for (auto & particle : particles_) {
+    particle.SetVelocity(particle.GetVelocity() * glm::vec2(0.5, 0.5));
+  }
+}
+void GasContainer::SpeedUpParticles() {
+  for (auto & particle : particles_) {
+    particle.SetVelocity(particle.GetVelocity() * glm::vec2(2, 2));
+  }
 }
 
 }  // namespace idealgas

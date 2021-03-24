@@ -19,4 +19,13 @@ void IdealGasApp::update() {
   container_.AdvanceOneFrame();
 }
 
+void IdealGasApp::keyDown(cinder::app::KeyEvent event) {
+  if (event.getCode() == cinder::app::KeyEvent::KEY_UP) {
+    container_.SpeedUpParticles();
+  }
+  if (event.getCode() == cinder::app::KeyEvent::KEY_DOWN) {
+    container_.SlowDownParticles();
+  }
+}
+
 }  // namespace idealgas
