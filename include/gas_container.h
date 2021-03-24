@@ -52,6 +52,7 @@ class GasContainer {
   int MaxParticleSpeed() const;
 
  private:
+  int frames = 0;
   const int kWindowLength_;       //
   const int kWindowWidth_;        //
   const int kMargin_;             // size of margin surrounding container

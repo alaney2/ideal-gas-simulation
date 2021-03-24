@@ -32,7 +32,6 @@ void GasContainer::Display() const {
   ci::gl::drawStrokedRect(
       ci::Rectf(vec2(kMargin_, kMargin_),
                 vec2(kWindowLength_ - kMargin_, kWindowLength_ - kMargin_)), 4);
-
   DisplayHistogram(vec2(kWindowLength_, kMargin_/2),
                    vec2(kWindowWidth_ - kMargin_, (kWindowLength_ - 2*kMargin_)/3 + kMargin_/2),
                   ci::Color("orange"), fast_speeds_);
@@ -47,14 +46,17 @@ void GasContainer::Display() const {
 }
 
 void GasContainer::AdvanceOneFrame() {
+  frames++;
   PhysicsEngine::AdjustVelocitiesOnCollision(particles_);
 
   for (auto &particle : particles_) {
     PhysicsEngine::ParticleWallCollision(kWindowLength_, kMargin_, particle);
     particle.SetPosition(particle.GetPosition() += particle.GetVelocity());
   }
-
-  UpdateHistograms();
+  // Update every five frames
+  if (frames % 5 == 0) {
+    UpdateHistograms();
+  }
 }
 
 void GasContainer::GenerateParticles(vector<idealgas::Particle> &particles,
@@ -80,7 +82,7 @@ void GasContainer::GenerateParticles(vector<idealgas::Particle> &particles,
 
 void GasContainer::DrawHistogramBoxes() const {
   ci::gl::drawStringCentered("Speed", vec2((kWindowLength_ + kWindowWidth_ - kMargin_)/2, kMargin_/4));
-  ci::gl::drawStringCentered("1/λ", vec2(kWindowWidth_ - kMargin_*0.75, kWindowLength_/2));
+  ci::gl::drawStringCentered("1/λ", vec2(kWindowWidth_ - kMargin_*0.67, kWindowLength_/2));
   ci::gl::color(kBorderColor_);
   ci::gl::drawStrokedRect(
       ci::Rectf(vec2(kWindowLength_, kMargin_/2),
@@ -150,9 +152,8 @@ int GasContainer::MaxParticleSpeed() const {
       max_speed = particle_speed;
     }
   }
-  max_speed = static_cast<int>(max_speed);
 
-  return max_speed;
+  return static_cast<int>(max_speed);
 }
 
 }  // namespace idealgas

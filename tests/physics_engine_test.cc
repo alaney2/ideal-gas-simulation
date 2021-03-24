@@ -11,8 +11,35 @@ const int kMargin = 0;
 PhysicsEngine engine;
 
 TEST_CASE("Particle collisions with different mass") {
-  SECTION("") {
-    
+  SECTION("New velocity after heavy particle collides with light particle") {
+    Particle heavy_particle(vec2(100, 100), vec2(1, 0), 5, 5, "cyan");
+    Particle light_particle(vec2(102, 100), vec2(-1, 0), 1, 1, "cyan");
+    REQUIRE(PhysicsEngine::DetectCollision(heavy_particle, light_particle));
+
+    heavy_particle.SetVelocity(engine.GetVelocityAfterCollision(heavy_particle, light_particle));
+    light_particle.SetVelocity(engine.GetVelocityAfterCollision(light_particle, heavy_particle));
+
+    REQUIRE(heavy_particle.GetVelocity().x == Approx(0.33333f));
+    REQUIRE(heavy_particle.GetVelocity().y == 0.0f);
+    REQUIRE(light_particle.GetVelocity().x == Approx(1.22222f));
+    REQUIRE(light_particle.GetVelocity().y == 0);
+  }
+
+  SECTION("New position after heavy particle collides with light particle") {
+    Particle heavy_particle(vec2(100, 100), vec2(1, 0), 5, 5, "cyan");
+    Particle light_particle(vec2(102, 100), vec2(-1, 0), 1, 1, "cyan");
+    REQUIRE(PhysicsEngine::DetectCollision(heavy_particle, light_particle));
+
+    heavy_particle.SetVelocity(engine.GetVelocityAfterCollision(heavy_particle, light_particle));
+    light_particle.SetVelocity(engine.GetVelocityAfterCollision(light_particle, heavy_particle));
+
+    heavy_particle.SetPosition(heavy_particle.GetPosition() + heavy_particle.GetVelocity());
+    light_particle.SetPosition(light_particle.GetPosition() + light_particle.GetVelocity());
+
+    REQUIRE(heavy_particle.GetPosition().x == Approx(100.33334f));
+    REQUIRE(heavy_particle.GetPosition().y == 100);
+    REQUIRE(light_particle.GetPosition().x == Approx(103.22222f));
+    REQUIRE(light_particle.GetPosition().y == 100);
   }
 }
 
@@ -254,7 +281,7 @@ TEST_CASE("Particle colliding with container wall") {
 }
 
 TEST_CASE("Velocity update after particle collision") {
-  SECTION("Collision from right particle") {
+  SECTION("No collision") {
     Particle particle_moving_right(vec2(199,100), vec2(-1,0), 1, 1, "cyan");
     Particle target_particle(vec2(101,100), vec2(-1,0), 1, 1, "cyan");
     particle_moving_right.SetVelocity(engine.GetVelocityAfterCollision(particle_moving_right, target_particle));
