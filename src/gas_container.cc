@@ -127,7 +127,7 @@ void GasContainer::DisplayHistogram(const glm::vec2 &top_left_corner,
     ci::gl::color(color);
     ci::gl::drawStrokedRect(
         ci::Rectf(vec2(top_left_corner.x + bin*bin_width,
-                       bottom_right_corner.y - ((bottom_right_corner.y - top_left_corner.y) * bin_height_ratio * 0.9)),
+                       bottom_right_corner.y - ((bottom_right_corner.y - top_left_corner.y) * bin_height_ratio * 0.95)),
                   vec2(top_left_corner.x + (bin + 1.0) * bin_width, bottom_right_corner.y)), 2);
   }
 }
