@@ -3,21 +3,20 @@
 #include "cinder/gl/gl.h"
 #include "gas_particle.h"
 
-using glm::vec2;
-
 namespace idealgas {
 
 /**
  * The container in which all of the gas particles_ are contained. This class
- * stores all of the particles_ and updates them on each frame of the simulation.
+ * stores all of the particles_ and updates them on each frame of the
+ * simulation.
  */
 class GasContainer {
  public:
   /**
-   * The gas container to hold all the gas particles.
+   * The gas container used to hold the gas particles.
    */
-  GasContainer(int kWindowSize, int kMargin,
-               const ci::Color& kBorderColor);
+  GasContainer(const size_t kWindowLength, const size_t kWindowWidth,
+               const size_t kMargin, const ci::Color &kBorderColor);
 
   /**
    * Displays the container walls and the current positions of the particles_.
@@ -40,36 +39,71 @@ class GasContainer {
                          Particle &particle, size_t particle_amount);
 
   /**
-   * Sets new velocity after hitting wall.
+   * Draws the outlines for the histograms
    */
-  void NegateVelocityOnWallCollision(Particle &particle);
+  void DrawHistogramBoxes() const;
 
   /**
-   * Detects if there is a collision between two particles.
-   * @param p1 first particle
-   * @param p2 second particle
-   * @return if there is a collision
+   * Updates three maps of different particles
    */
-  static bool DetectCollision(Particle &p1, Particle &p2);
+  void UpdateHistograms();
 
   /**
-   * Sets new velocities of particles that have collided.
+   * Draws histogram bins
+   * @param top_left_corner of histogram
+   * @param bottom_right_corner of histogram
+   * @param color of particles and histogram bins
+   * @param speeds map of how many particles are in each bin
    */
-  void AdjustVelocityOnCollision();
+  void DisplayHistogram(const glm::vec2 &top_left_corner,
+                        const glm::vec2 &bottom_right_corner,
+                        const ci::Color &color,
+                        std::map<int, int> speeds) const;
 
   /**
-   * Gets the new velocity after a collision.
-   * @param p1 first particle
-   * @param p2 second particle
-   * @return new velocity vec2 after collision
+   * sets all values of keys in histogram maps to 0
    */
-  vec2 GetVelocityAfterCollision(Particle &p1, Particle &p2);
+  void ResetHistograms();
+
+  /**
+   * @return speed of fastest particle
+   */
+  int MaxParticleSpeed() const;
+
+  /**
+   * Slows down all particles
+   */
+  void SlowDownParticles();
+
+  /**
+   * Speeds up all particles
+   */
+  void SpeedUpParticles();
+
+  /**
+   * Getter method to retrieve map that stores histogram data.
+   */
+  std::map<int, int> GetMap(const ci::Color& color) const;
+
+  /**
+   * Calculates the most amount of particles there are in a histogram bin
+   * and sets the max height.
+   */
+  void CalculateMaxHeight();
 
  private:
-  const int kWindowSize_; // size of application window
-  const int kMargin_; // size of margin surrounding container
-  const ci::Color kBorderColor_; // color of gas container border
-  std::vector<idealgas::Particle> particles_; // vector of particles in container
+  int frames = 0;
+  const size_t kWindowLength_;       // length of the application window
+  const size_t kWindowWidth_;        // width of the application window
+  const size_t kMargin_;             // size of margin surrounding container
+  const ci::Color kBorderColor_;     // color of gas container border
+  std::vector<idealgas::Particle> particles_;
+                                     // vector of particles in container
+  std::map<int, int> slow_speeds_;   // map of how many particles are in each bin for the slow particles
+  std::map<int, int> medium_speeds_; // medium particles
+  std::map<int, int> fast_speeds_;   // fast particles
+  const size_t num_bins_ = 12;       // number of bins in each histogram
+  size_t max_height_ = 0;            // most amount of particles in a histogram bin
 };
 
 }  // namespace idealgas

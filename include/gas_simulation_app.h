@@ -16,9 +16,11 @@ class IdealGasApp : public ci::app::App {
 
   void draw() override;
   void update() override;
+  void keyDown(cinder::app::KeyEvent event) override;
 
-  const int kWindowSize = 750;
-  const int kMargin = 100;
+  const size_t kWindowLength = 800;
+  const size_t kWindowWidth = static_cast<int>(1.6 * kWindowLength);
+  const size_t kMargin = 80;
   const ci::Color kBorderColor = ci::Color("white");
 
  private:

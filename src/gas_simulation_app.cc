@@ -3,8 +3,9 @@
 namespace idealgas {
 
 
-IdealGasApp::IdealGasApp() : container_(kWindowSize, kMargin, kBorderColor) {
-    ci::app::setWindowSize(kWindowSize, kWindowSize);
+IdealGasApp::IdealGasApp() : container_(kWindowLength, kWindowWidth,
+                 kMargin, kBorderColor) {
+    ci::app::setWindowSize(kWindowWidth, kWindowLength);
 }
 
 void IdealGasApp::draw() {
@@ -16,6 +17,15 @@ void IdealGasApp::draw() {
 
 void IdealGasApp::update() {
   container_.AdvanceOneFrame();
+}
+
+void IdealGasApp::keyDown(cinder::app::KeyEvent event) {
+  if (event.getCode() == cinder::app::KeyEvent::KEY_UP) {
+    container_.SpeedUpParticles();
+  }
+  if (event.getCode() == cinder::app::KeyEvent::KEY_DOWN) {
+    container_.SlowDownParticles();
+  }
 }
 
 }  // namespace idealgas
