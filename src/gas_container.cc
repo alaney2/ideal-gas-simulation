@@ -166,5 +166,14 @@ void GasContainer::SpeedUpParticles() {
     particle.SetVelocity(particle.GetVelocity() * glm::vec2(2, 2));
   }
 }
+std::map<int, int> GasContainer::GetMap(const ci::Color& color) const {
+  if (color == "orange") {
+    return fast_speeds_;
+  } else if (color == "red") {
+    return medium_speeds_;
+  } else {
+    return slow_speeds_;
+  }
+}
 
 }  // namespace idealgas

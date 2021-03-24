@@ -80,6 +80,11 @@ class GasContainer {
    */
   void SpeedUpParticles();
 
+  /**
+   * Getter method to retrieve map that stores histogram data.
+   */
+  std::map<int, int> GetMap(const ci::Color& color) const;
+
  private:
   int frames = 0;
   const int kWindowLength_;          // length of the application window
