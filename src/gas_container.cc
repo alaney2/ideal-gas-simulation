@@ -46,7 +46,7 @@ void GasContainer::Display() const {
 }
 
 void GasContainer::AdvanceOneFrame() {
-  ++Mframes;
+  ++frames;
   PhysicsEngine::AdjustVelocitiesOnCollision(particles_);
 
   for (auto &particle : particles_) {
