@@ -100,8 +100,14 @@ class GasContainer {
   std::vector<idealgas::Particle> particles_;
                                      // vector of particles in container
   std::map<int, int> slow_speeds_;   // map of how many particles are in each bin for the slow particles
+  ci::Color slow_color_ = "green";
+
   std::map<int, int> medium_speeds_; // medium particles
+  ci::Color medium_color_ = "red";
+
   std::map<int, int> fast_speeds_;   // fast particles
+  ci::Color fast_color_ = "orange";
+
   const size_t num_bins_ = 12;       // number of bins in each histogram
   size_t max_height_ = 0;            // most amount of particles in a histogram bin
 };

@@ -13,9 +13,9 @@ GasContainer::GasContainer(const size_t kWindowLength,
       kWindowWidth_(kWindowWidth),
       kMargin_(kMargin),
       kBorderColor_(kBorderColor) {
-  Particle orange_particle(vec2(), vec2(4, 4), 6, 6, ci::Color("orange"));
-  Particle red_particle(vec2(), vec2(3, 2), 12, 12, ci::Color("red"));
-  Particle green_particle(vec2(), vec2(2, 2), 18, 18, ci::Color("green"));
+  Particle orange_particle(vec2(), vec2(4, 4), 6, 6, fast_color_);
+  Particle red_particle(vec2(), vec2(3, 2), 12, 12, medium_color_);
+  Particle green_particle(vec2(), vec2(2, 2), 18, 18, slow_color_);
 
   GenerateParticles(particles_, green_particle, 33);
   GenerateParticles(particles_, red_particle, 33);
@@ -46,7 +46,7 @@ void GasContainer::Display() const {
 }
 
 void GasContainer::AdvanceOneFrame() {
-  frames++;
+  ++Mframes;
   PhysicsEngine::AdjustVelocitiesOnCollision(particles_);
 
   for (auto &particle : particles_) {
@@ -101,11 +101,11 @@ void GasContainer::UpdateHistograms() {
   for (auto & particle : particles_) {
     for (size_t bin = 0; bin < num_bins_; ++bin) {
       if (particle.GetSpeed() <= max_speed * (static_cast<double>((bin + 1.0) / num_bins_))) {
-        if (particle.GetColor() == ci::Color("orange")) {
+        if (particle.GetColor() == fast_color_) {
           fast_speeds_[bin] += 1;
-        } else if (particle.GetColor() == ci::Color("red")) {
+        } else if (particle.GetColor() == medium_color_) {
           medium_speeds_[bin] += 1;
-        } else if (particle.GetColor() == ci::Color("green")) {
+        } else if (particle.GetColor() == slow_color_) {
           slow_speeds_[bin] += 1;
         }
         break;
@@ -157,15 +157,17 @@ void GasContainer::SlowDownParticles() {
     particle.SetVelocity(particle.GetVelocity() * glm::vec2(0.5, 0.5));
   }
 }
+
 void GasContainer::SpeedUpParticles() {
   for (auto & particle : particles_) {
     particle.SetVelocity(particle.GetVelocity() * glm::vec2(2, 2));
   }
 }
+
 std::map<int, int> GasContainer::GetMap(const ci::Color& color) const {
-  if (color == "orange") {
+  if (color == fast_color_) {
     return fast_speeds_;
-  } else if (color == "red") {
+  } else if (color == medium_color_) {
     return medium_speeds_;
   } else {
     return slow_speeds_;
