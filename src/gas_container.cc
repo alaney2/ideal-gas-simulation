@@ -1,5 +1,4 @@
 #include "gas_container.h"
-#include "physics_engine.h"
 
 namespace idealgas {
 

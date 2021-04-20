@@ -67,4 +67,4 @@ vec2 PhysicsEngine::GetVelocityAfterCollision(const Particle& p1,
 
   return p1.GetVelocity() - new_position;
 }
-}
+} // namespace idealgas

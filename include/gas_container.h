@@ -2,6 +2,7 @@
 
 #include "cinder/gl/gl.h"
 #include "gas_particle.h"
+#include "physics_engine.h"
 
 namespace idealgas {
 
